@@ -1,0 +1,3 @@
+[submodule "docker"]
+	path = docker
+	url = git@github.com:wand2016/docker-php.git
