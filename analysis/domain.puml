@@ -1,0 +1,54 @@
+@startuml
+
+class tweet検索条件 {
+  + 検索対象twitterアカウントユーザー名: string
+  + 検索キーワード: string[]
+}
+
+class tweet検索条件コレクション{
+ + 登録(tweet検索条件)
+ + 読込(tweet検索条件ID): tweet検索条件
+}
+tweet検索条件コレクション o- tweet検索条件
+
+class tweet検索期間{
+  + 開始日
+  + 終了日
+}
+
+class tweet {
+  + 日時
+}
+
+class tweetコレクション{
+  + 件数: number
+}
+
+class tweet検索API
+tweet検索API -d- tweet検索APIレスポンス
+tweet検索APIレスポンス -- tweetコレクション
+tweetコレクション o-d- tweet
+
+class tweet検索APIクエリ
+tweet検索APIクエリ o-d- tweet検索期間
+tweet検索APIクエリ o-d- tweet検索条件
+
+tweet検索API - tweet検索APIクエリ
+
+class tweet検索集計結果
+tweet検索集計結果 -- tweet検索条件
+tweetコレクション -r- tweet検索集計結果
+class 日次tweet数 {
+  + 年月日
+  + 件数
+}
+tweet検索集計結果 o-d- 日次tweet数
+
+class tweet検索集計結果API {
+  + エンドポイント名
+}
+
+tweet検索集計結果API -- tweet検索条件
+tweet検索集計結果API -- tweet検索集計結果
+
+@enduml
