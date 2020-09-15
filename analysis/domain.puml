@@ -35,13 +35,20 @@ tweet検索APIクエリ o-d- tweet検索条件
 
 tweet検索API - tweet検索APIクエリ
 
-class tweet日次集計結果
-tweetコレクション -r- tweet日次集計結果
+class tweet検索集計結果
+tweet検索集計結果 -- tweet検索条件
+tweetコレクション -r- tweet検索集計結果
 class 日次tweet数 {
   + 年月日
   + 件数
 }
-tweet日次集計結果 o-d- 日次tweet数
+tweet検索集計結果 o-d- 日次tweet数
 
+class tweet検索集計結果API {
+  + エンドポイント名
+}
+
+tweet検索集計結果API -- tweet検索条件
+tweet検索集計結果API -- tweet検索集計結果
 
 @enduml
