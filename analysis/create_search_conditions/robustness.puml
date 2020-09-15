@@ -1,0 +1,44 @@
+@startuml
+
+
+'left to right direction
+
+skinparam control {
+  BackgroundColor<<Alternative>> Gray
+
+}
+
+usecase 検索条件を登録する
+
+actor 利用者
+boundary 検索条件登録画面
+entity 検索条件
+control 検索条件入力値検証
+control 検索条件登録内容検証
+control 検索条件永続化
+control 登録完了通知
+control エラー処理共通 <<Alternative>>
+control バリデーションエラー処理 <<Alternative>>
+control 検索条件永続化エラー処理 <<Alternative>>
+control 検索条件永続化ロールバック <<Alternative>>
+boundary 通知窓
+
+利用者 -d-> 検索条件登録画面
+検索条件登録画面 -d---> 検索条件入力値検証
+検索条件入力値検証 -r-> 検索条件登録内容検証
+検索条件登録内容検証 <-d- 検索条件
+検索条件登録内容検証 -r-> 検索条件永続化
+検索条件永続化 -d-> 検索条件
+検索条件永続化 -r-> 登録完了通知
+登録完了通知 -u---> 通知窓
+通知窓 -l-> 利用者
+
+エラー処理共通 -u-> 通知窓
+検索条件入力値検証 -u-> バリデーションエラー処理
+検索条件登録内容検証 -u-> バリデーションエラー処理
+バリデーションエラー処理 -u-> エラー処理共通
+検索条件永続化 -u-> 検索条件永続化エラー処理
+検索条件永続化エラー処理 -r-> 検索条件永続化ロールバック
+検索条件永続化エラー処理 -u-> エラー処理共通
+
+@enduml
