@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway\RequestDto;
+namespace App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway\Dto\RequestDto;
 
 use DomainException;
 
 /**
  * Class MaxResults
- * @package App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway\RequestDto
+ * @package App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway\Dto\RequestDto
  */
 final class MaxResults
 {

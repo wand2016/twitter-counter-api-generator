@@ -2,16 +2,17 @@
 
 declare(strict_types=1);
 
-namespace App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway;
+namespace App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway\Dto;
 
 use App\Domain\Tweet\TweetSearcher\Criteria;
-use App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway\RequestDto\MaxResults;
+use App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway\Dto\RequestDto\MaxResults;
+use App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway\Dto\RequestDtoFactory\QueryStringifier;
 
 /**
- * Class RequestFactory
- * @package App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway
+ * Class RequestDtoFactory
+ * @package App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway\Dto
  */
-class RequestFactory
+class RequestDtoFactory
 {
     /**
      * @var QueryStringifier
@@ -19,7 +20,7 @@ class RequestFactory
     private QueryStringifier $queryStringifier;
 
     /**
-     * RequestFactory constructor.
+     * RequestDtoFactory constructor.
      * @param QueryStringifier $queryStringifier
      */
     public function __construct(QueryStringifier $queryStringifier)

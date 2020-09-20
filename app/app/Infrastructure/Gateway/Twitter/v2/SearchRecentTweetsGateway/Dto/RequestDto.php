@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway;
+namespace App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway\Dto;
 
-use App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway\RequestDto\MaxResults;
-use App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway\RequestDto\TweetField;
+use App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway\Dto\RequestDto\MaxResults;
+use App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway\Dto\RequestDto\TweetField;
 use DateTimeInterface;
 
 /**
- * Class Request
- * @package App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway
+ * Class RequestDto
+ * @package App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway\Dto
  * {@see https://developer.twitter.com/en/docs/twitter-api/tweets/search/api-reference/get-tweets-search-recent}
  */
 final class RequestDto

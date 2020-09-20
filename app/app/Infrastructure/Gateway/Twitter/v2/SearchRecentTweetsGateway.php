@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace App\Infrastructure\Gateway\Twitter\v2;
 
 use App\Exceptions\TwitterApi\SearchRecentFailedException;
-use App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway\RequestDto;
-use App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway\ResponseDto;
+use App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway\Dto\RequestDto;
+use App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway\Dto\ResponseDto;
+use App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway\Dto\ResponseDtoFactory;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\BadResponseException;
 
@@ -32,15 +33,26 @@ class SearchRecentTweetsGateway
     private BearerTokenPool $bearerTokenPool;
 
     /**
+     * @var ResponseDtoFactory
+     */
+    private ResponseDtoFactory $responseDtoFactory;
+
+    /**
      * SearchRecentTweetsGateway constructor.
      * @param Client $client
      * @param BearerTokenPool $bearerTokenPool
+     * @param ResponseDtoFactory $responseDtoFactory
      */
-    public function __construct(Client $client, BearerTokenPool $bearerTokenPool)
-    {
+    public function __construct(
+        Client $client,
+        BearerTokenPool $bearerTokenPool,
+        ResponseDtoFactory $responseDtoFactory
+    ) {
         $this->client = $client;
         $this->bearerTokenPool = $bearerTokenPool;
+        $this->responseDtoFactory = $responseDtoFactory;
     }
+
 
     /**
      * @param RequestDto $request
@@ -68,6 +80,6 @@ class SearchRecentTweetsGateway
             throw new SearchRecentFailedException($e);
         }
 
-        return ResponseDto::createFromResponseContents($response->getBody()->getContents());
+        return $this->responseDtoFactory->parsePsrResponseContents($response);
     }
 }

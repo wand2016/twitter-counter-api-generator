@@ -2,15 +2,14 @@
 
 declare(strict_types=1);
 
-namespace App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway;
+namespace App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway\Dto\RequestDtoFactory;
 
 use App\Domain\Tweet\TweetSearcher\Criteria\Match;
 use InvalidArgumentException;
 
 /**
- * TODO: percent encoding ?
  * Class QueryStringifier
- * @package App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway
+ * @package App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway\Dto\RequestDtoFactory
  */
 class QueryStringifier
 {

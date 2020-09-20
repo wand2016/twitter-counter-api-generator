@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway;
+namespace Tests\Unit\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway\Dto\RequestDtoFactory;
 
 use App\Domain\Tweet\TweetSearcher\Criteria\Match;
-use App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway\QueryStringifier;
+use App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway\Dto\RequestDtoFactory\QueryStringifier;
 use PHPUnit\Framework\TestCase;
 
 class QueryStringifierTest extends TestCase

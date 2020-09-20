@@ -7,7 +7,7 @@ namespace App\Infrastructure\Domain\Tweet;
 use App\Domain\Tweet\TweetCollection;
 use App\Domain\Tweet\TweetSearcher as TweetSearcherInterface;
 use App\Domain\Tweet\TweetSearcher\Criteria;
-use App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway\RequestFactory;
+use App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway\Dto\RequestDtoFactory;
 
 /**
  * Class TweetSearcher
@@ -16,26 +16,25 @@ use App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway\RequestFacto
 class TweetSearcher implements TweetSearcherInterface
 {
     /**
-     * @var RequestFactory
+     * @var RequestDtoFactory
      */
-    private RequestFactory $requestFactory;
+    private RequestDtoFactory $requestDtoFactory;
 
     /**
      * TweetSearcher constructor.
-     * @param RequestFactory $requestFactory
+     * @param RequestDtoFactory $requestDtoFactory
      */
-    public function __construct(RequestFactory $requestFactory)
+    public function __construct(RequestDtoFactory $requestDtoFactory)
     {
-        $this->requestFactory = $requestFactory;
+        $this->requestDtoFactory = $requestDtoFactory;
     }
-
 
     /**
      * @inheritDoc
      */
     public function search(Criteria $criteria): TweetCollection
     {
-        $request = $this->requestFactory->createFromCriteria($criteria);
+        $requestDto = $this->requestDtoFactory->createFromCriteria($criteria);
 
         // stub
         // TODO: impl
