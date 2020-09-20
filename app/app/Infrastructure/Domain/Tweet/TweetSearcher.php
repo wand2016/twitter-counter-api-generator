@@ -9,7 +9,7 @@ use App\Domain\Tweet\TweetSearcher as TweetSearcherInterface;
 use App\Domain\Tweet\TweetSearcher\Criteria;
 use App\Infrastructure\Gateway\Twitter\v2\BearerTokenPool;
 use App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway\QueryStringifier;
-use App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway\Request;
+use App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway\RequestDto;
 
 /**
  * Class TweetSearcher
@@ -46,7 +46,7 @@ class TweetSearcher implements TweetSearcherInterface
     {
         $bearerToken = $this->bearerTokenPool->getBearerToken();
 
-        $request = new Request(
+        $request = new RequestDto(
             $this->queryStringifier->stringifyMatch($criteria->getMatch()),
             null,
             null,

@@ -28,14 +28,14 @@ class RequestFactory
 
     /**
      * @param Criteria $criteria
-     * @return Request
+     * @return RequestDto
      */
-    public function createFromCriteria(Criteria $criteria): Request
+    public function createFromCriteria(Criteria $criteria): RequestDto
     {
         $query = $this->queryStringifier->stringifyMatch($criteria->getMatch());
 
         // TODO: impl
-        return new Request(
+        return new RequestDto(
             $query,
             null,
             null,

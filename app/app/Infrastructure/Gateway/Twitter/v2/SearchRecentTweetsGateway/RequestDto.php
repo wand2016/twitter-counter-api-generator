@@ -11,7 +11,7 @@ use DateTimeInterface;
  * @package App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway
  * {@see https://developer.twitter.com/en/docs/twitter-api/tweets/search/api-reference/get-tweets-search-recent}
  */
-class Request
+class RequestDto
 {
     /**
      * @var string
@@ -59,6 +59,6 @@ class Request
     public function toQueryString(): string
     {
         // TODO: impl
-        return '';
+        return $this->query;
     }
 }
