@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\Tweet\TweetSearcher;
 
 use App\Domain\Tweet\TweetSearcher\Criteria\Match;
+use App\Domain\Tweet\TweetSearcher\Criteria\Period;
 
 /**
  * Class Criteria
@@ -17,15 +18,22 @@ class Criteria
      */
     private Match $match;
 
-    // TODO: period, filter
+    /**
+     * @var Period
+     */
+    private Period $period;
+
+    // TODO: filter
 
     /**
      * Criteria constructor.
      * @param Match $match
+     * @param Period $period
      */
-    public function __construct(Match $match)
+    public function __construct(Match $match, Period $period)
     {
         $this->match = $match;
+        $this->period = $period;
     }
 
     /**
@@ -34,5 +42,13 @@ class Criteria
     public function getMatch(): Match
     {
         return $this->match;
+    }
+
+    /**
+     * @return Period
+     */
+    public function getPeriod(): Period
+    {
+        return $this->period;
     }
 }
