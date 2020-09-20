@@ -34,4 +34,12 @@ final class Tweet
     {
         return new static($tweetedAt);
     }
+
+    /**
+     * @return DatetimeInterface
+     */
+    public function getTweetedAt(): DatetimeInterface
+    {
+        return $this->tweetedAt;
+    }
 }
