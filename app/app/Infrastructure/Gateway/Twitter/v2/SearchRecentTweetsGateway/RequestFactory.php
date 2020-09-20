@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway;
 
 use App\Domain\Tweet\TweetSearcher\Criteria;
+use App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway\RequestDto\MaxResults;
 
 /**
  * Class RequestFactory
@@ -40,6 +41,7 @@ class RequestFactory
             null,
             null,
             [],
+            MaxResults::max(),
             null
         );
     }

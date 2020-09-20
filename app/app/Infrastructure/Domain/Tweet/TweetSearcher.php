@@ -7,9 +7,7 @@ namespace App\Infrastructure\Domain\Tweet;
 use App\Domain\Tweet\TweetCollection;
 use App\Domain\Tweet\TweetSearcher as TweetSearcherInterface;
 use App\Domain\Tweet\TweetSearcher\Criteria;
-use App\Infrastructure\Gateway\Twitter\v2\BearerTokenPool;
-use App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway\QueryStringifier;
-use App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway\RequestDto;
+use App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway\RequestFactory;
 
 /**
  * Class TweetSearcher
@@ -18,24 +16,17 @@ use App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway\RequestDto;
 class TweetSearcher implements TweetSearcherInterface
 {
     /**
-     * @var BearerTokenPool
+     * @var RequestFactory
      */
-    private BearerTokenPool $bearerTokenPool;
-
-    /**
-     * @var QueryStringifier
-     */
-    private QueryStringifier $queryStringifier;
+    private RequestFactory $requestFactory;
 
     /**
      * TweetSearcher constructor.
-     * @param BearerTokenPool $bearerTokenPool
-     * @param QueryStringifier $queryStringifier
+     * @param RequestFactory $requestFactory
      */
-    public function __construct(BearerTokenPool $bearerTokenPool, QueryStringifier $queryStringifier)
+    public function __construct(RequestFactory $requestFactory)
     {
-        $this->bearerTokenPool = $bearerTokenPool;
-        $this->queryStringifier = $queryStringifier;
+        $this->requestFactory = $requestFactory;
     }
 
 
@@ -44,15 +35,7 @@ class TweetSearcher implements TweetSearcherInterface
      */
     public function search(Criteria $criteria): TweetCollection
     {
-        $bearerToken = $this->bearerTokenPool->getBearerToken();
-
-        $request = new RequestDto(
-            $this->queryStringifier->stringifyMatch($criteria->getMatch()),
-            null,
-            null,
-            [],
-            null
-        );
+        $request = $this->requestFactory->createFromCriteria($criteria);
 
         // stub
         // TODO: impl

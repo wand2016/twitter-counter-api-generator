@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway;
 
+use App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway\RequestDto\MaxResults;
 use App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway\RequestDto\TweetField;
 use DateTimeInterface;
 
@@ -35,6 +36,11 @@ final class RequestDto
     private iterable $tweetFields;
 
     /**
+     * @var MaxResults|null
+     */
+    private ?MaxResults $maxResults;
+
+    /**
      * for fetching over 100 tweets
      * @var string|null
      */
@@ -46,6 +52,7 @@ final class RequestDto
      * @param DateTimeInterface|null $startTime
      * @param DateTimeInterface|null $endTime
      * @param TweetField[]|iterable $tweetFields
+     * @param MaxResults|null $maxResults
      * @param string|null $sinceId
      */
     public function __construct(
@@ -53,12 +60,14 @@ final class RequestDto
         ?DateTimeInterface $startTime,
         ?DateTimeInterface $endTime,
         iterable $tweetFields,
-        ?string $sinceId = null
+        ?MaxResults $maxResults,
+        ?string $sinceId
     ) {
         $this->query = $query;
         $this->startTime = $startTime;
         $this->endTime = $endTime;
         $this->tweetFields = $tweetFields;
+        $this->maxResults = $maxResults;
         $this->sinceId = $sinceId;
     }
 
@@ -77,6 +86,11 @@ final class RequestDto
             $ret['tweet.fields'] = $tweetFields;
         }
 
+        $maxResults = $this->buildMaxResults();
+        if ($maxResults) {
+            $ret['max_results'] = $maxResults;
+        }
+
         return $ret;
     }
 
@@ -92,5 +106,13 @@ final class RequestDto
                 }
             )
             ->join(',');
+    }
+
+    /**
+     * @return int|null
+     */
+    private function buildMaxResults(): ?int
+    {
+        return $this->maxResults ? $this->maxResults->getValue() : null;
     }
 }
