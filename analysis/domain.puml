@@ -36,15 +36,19 @@ class tweet検索期間{
 }
 
 class tweet検索条件{
+  + マッチ条件
   + twitter検索期間
+}
+
+class マッチ条件 {
   + 検索対象twitterアカウントユーザー名: string
   + 検索キーワード: string[]
 }
 
+tweet検索条件 o-- マッチ条件
 tweet検索条件 o-- tweet検索期間
 
 }
-
 
 tweet検索集計結果API -- tweet検索条件
 
