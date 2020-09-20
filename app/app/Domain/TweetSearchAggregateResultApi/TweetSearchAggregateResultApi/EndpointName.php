@@ -2,16 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Tweet\TweetSearcher\Criteria\Match;
-
-use App\Domain\Tweet\TweetSearcher\Criteria\Match;
+namespace App\Domain\TweetSearchAggregateResultApi\TweetSearchAggregateResultApi;
 
 /**
- * tweets what
- * Class Keyword
- * @package App\Domain\Tweet\TweetSearcher\Criteria\Match
+ * Class EndpointName
+ * @package App\Domain\TweetSearchAggregateResultApi\TweetSearchAggregateResultApi
  */
-class Keyword implements Match
+final class EndpointName
 {
     /**
      * @var string
@@ -19,11 +16,12 @@ class Keyword implements Match
     private string $value;
 
     /**
-     * Keyword constructor.
+     * EndpointName constructor.
      * @param string $value
      */
     public function __construct(string $value)
     {
+        // TOOD: validation
         $this->value = $value;
     }
 

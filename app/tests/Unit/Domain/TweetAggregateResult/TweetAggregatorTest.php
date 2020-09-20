@@ -1,12 +1,12 @@
 <?php
 
-namespace Tests\Unit\Domain\Tweet;
+namespace Tests\Unit\Domain\TweetAggregateResult;
 
-use App\Domain\Tweet\AggregateResult\Daily;
-use App\Domain\Tweet\Date\Date;
 use App\Domain\Tweet\Tweet;
-use App\Domain\Tweet\TweetAggregator;
+use App\Domain\Tweet\Tweet\Date;
 use App\Domain\Tweet\TweetCollection;
+use App\Domain\TweetAggregateResult\TweetAggregateResult\Daily;
+use App\Domain\TweetAggregateResult\TweetAggregator;
 use Carbon\CarbonImmutable;
 use PHPUnit\Framework\TestCase;
 

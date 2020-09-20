@@ -1,8 +1,8 @@
 <?php
 
-declare(strict_type=1);
+declare(strict_types=1);
 
-namespace App\Domain\Tweet\Date;
+namespace App\Domain\Tweet\Tweet;
 
 use Carbon\CarbonImmutable;
 use DateTimeInterface;
@@ -10,7 +10,7 @@ use InvalidArgumentException;
 
 /**
  * Class Date
- * @package App\Domain\Tweet\Date
+ * @package App\Domain\Tweet\Tweet
  */
 final class Date
 {

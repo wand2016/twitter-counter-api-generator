@@ -1,25 +1,27 @@
 <?php
 
-declare(strict_type=1);
+declare(strict_types=1);
 
-namespace App\Domain\Tweet;
+namespace App\Domain\TweetAggregateResult;
 
-use App\Domain\Tweet\AggregateResult\Daily;
-use App\Domain\Tweet\Date\Date;
+use App\Domain\Tweet\Tweet;
+use App\Domain\Tweet\Tweet\Date;
+use App\Domain\Tweet\TweetCollection;
+use App\Domain\TweetAggregateResult\TweetAggregateResult\Daily;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Collection;
 
 /**
  * Class TweetAggregator
- * @package App\Domain\Tweet
+ * @package App\Domain\TweetAggregateResult
  */
 class TweetAggregator
 {
     /**
      * @param TweetCollection $tweetCollection
-     * @return AggregateResult
+     * @return TweetAggregateResult
      */
-    public function aggregate(TweetCollection $tweetCollection): AggregateResult
+    public function aggregate(TweetCollection $tweetCollection): TweetAggregateResult
     {
         $dailyResults = collect($tweetCollection->getTweets())
             ->groupBy(
@@ -40,6 +42,6 @@ class TweetAggregator
                 }
             );
 
-        return new AggregateResult(...$dailyResults);
+        return new TweetAggregateResult(...$dailyResults);
     }
 }

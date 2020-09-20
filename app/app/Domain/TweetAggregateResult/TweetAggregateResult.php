@@ -1,16 +1,16 @@
 <?php
 
-declare(strict_type=1);
+declare(strict_types=1);
 
-namespace App\Domain\Tweet;
+namespace App\Domain\TweetAggregateResult;
 
-use App\Domain\Tweet\AggregateResult\Daily;
+use App\Domain\TweetAggregateResult\TweetAggregateResult\Daily;
 
 /**
- * Class AggregateResult
- * @package App\Domain\Tweet
+ * Class TweetAggregateResult
+ * @package App\Domain\TweetAggregateResult
  */
-class AggregateResult
+class TweetAggregateResult
 {
     /**
      * @var iterable|Daily[]
@@ -18,7 +18,7 @@ class AggregateResult
     private iterable $dailyCounts;
 
     /**
-     * AggregateResult constructor.
+     * TweetAggregateResult constructor.
      * @param Daily ...$dailyCounts
      */
     public function __construct(Daily ...$dailyCounts)
