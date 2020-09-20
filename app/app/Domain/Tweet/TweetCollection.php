@@ -23,4 +23,12 @@ class TweetCollection
     {
         $this->tweets = $tweets;
     }
+
+    /**
+     * @return Tweet[]|iterable
+     */
+    public function getTweets(): iterable
+    {
+        return $this->tweets;
+    }
 }
