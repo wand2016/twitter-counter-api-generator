@@ -3,6 +3,7 @@
 namespace Tests\Unit\Infrastructure\Gateway\Twitter\v2;
 
 use App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway;
+use App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway\RequestDto\TweetField;
 use Tests\TestCase;
 
 class SearchRecentTweetsGatewayTest extends TestCase
@@ -21,7 +22,13 @@ class SearchRecentTweetsGatewayTest extends TestCase
 
     public function testCall(): void
     {
-        $request = new SearchRecentTweetsGateway\RequestDto('#しこにっき', null, null, null);
+        $request = new SearchRecentTweetsGateway\RequestDto(
+            '#しこにっき',
+            null,
+            null,
+            [new TweetField\CreatedAt()],
+            null
+        );
 
         $response = $this->sut->call($request);
 

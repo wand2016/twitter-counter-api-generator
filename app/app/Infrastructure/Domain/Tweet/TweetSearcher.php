@@ -50,6 +50,7 @@ class TweetSearcher implements TweetSearcherInterface
             $this->queryStringifier->stringifyMatch($criteria->getMatch()),
             null,
             null,
+            [],
             null
         );
 

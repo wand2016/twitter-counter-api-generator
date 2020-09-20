@@ -53,9 +53,7 @@ class SearchRecentTweetsGateway
         $response = $this->client->get(
             static::URI,
             [
-                'query' => [
-                    'query' => $request->toQueryString(),
-                ],
+                'query' => $request->toQueryParameters(),
                 'headers' => [
                     'Authorization' => "Bearer ${bearerToken}",
                 ],

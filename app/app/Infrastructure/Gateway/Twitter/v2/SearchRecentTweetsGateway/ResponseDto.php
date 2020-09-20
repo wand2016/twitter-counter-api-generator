@@ -8,7 +8,7 @@ namespace App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway;
  * Class ResponseDto
  * @package App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway
  */
-class ResponseDto
+final class ResponseDto
 {
     /**
      * @var string
@@ -25,11 +25,12 @@ class ResponseDto
     }
 
     /**
+     * @param string $raw
      * @return static
      */
     public static function createFromResponseContents(string $raw): self
     {
-        return new self(
+        return new static(
             $raw
         );
     }

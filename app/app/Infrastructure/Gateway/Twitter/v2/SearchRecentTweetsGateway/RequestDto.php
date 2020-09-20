@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway;
 
+use App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway\RequestDto\TweetField;
 use DateTimeInterface;
 
 /**
@@ -11,7 +12,7 @@ use DateTimeInterface;
  * @package App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway
  * {@see https://developer.twitter.com/en/docs/twitter-api/tweets/search/api-reference/get-tweets-search-recent}
  */
-class RequestDto
+final class RequestDto
 {
     /**
      * @var string
@@ -29,36 +30,67 @@ class RequestDto
     private ?DateTimeInterface $endTime;
 
     /**
+     * @var iterable|TweetField[]
+     */
+    private iterable $tweetFields;
+
+    /**
      * for fetching over 100 tweets
      * @var string|null
      */
     private ?string $sinceId;
 
     /**
-     * Request constructor.
+     * RequestDto constructor.
      * @param string $query
      * @param DateTimeInterface|null $startTime
      * @param DateTimeInterface|null $endTime
+     * @param TweetField[]|iterable $tweetFields
      * @param string|null $sinceId
      */
     public function __construct(
         string $query,
         ?DateTimeInterface $startTime,
         ?DateTimeInterface $endTime,
-        ?string $sinceId
+        iterable $tweetFields,
+        ?string $sinceId = null
     ) {
         $this->query = $query;
         $this->startTime = $startTime;
         $this->endTime = $endTime;
+        $this->tweetFields = $tweetFields;
         $this->sinceId = $sinceId;
+    }
+
+    /**
+     * TODO: impl
+     * @return array
+     */
+    public function toQueryParameters(): array
+    {
+        $ret = [
+            'query' => $this->query,
+        ];
+
+        $tweetFields = $this->buildTweetFields();
+        if ($tweetFields) {
+            $ret['tweet.fields'] = $tweetFields;
+        }
+
+        return $ret;
     }
 
     /**
      * @return string
      */
-    public function toQueryString(): string
+    private function buildTweetFields(): string
     {
-        // TODO: impl
-        return $this->query;
+        return collect($this->tweetFields)
+            ->map(
+                function (TweetField $tweetField): string {
+                    return $tweetField->getValue();
+                }
+            )
+            ->join(',');
     }
 }

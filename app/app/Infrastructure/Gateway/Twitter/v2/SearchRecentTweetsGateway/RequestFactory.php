@@ -39,6 +39,7 @@ class RequestFactory
             $query,
             null,
             null,
+            [],
             null
         );
     }
