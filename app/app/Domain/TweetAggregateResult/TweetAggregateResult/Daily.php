@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\TweetAggregateResult\TweetAggregateResult;
 
-use App\Domain\Tweet\Tweet\Date;
+use App\Domain\TweetAggregateResult\TweetAggregateResult\Daily\Date;
 use DomainException;
 
 /**

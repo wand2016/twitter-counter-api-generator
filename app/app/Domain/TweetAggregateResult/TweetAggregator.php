@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Domain\TweetAggregateResult;
 
 use App\Domain\Tweet\Tweet;
-use App\Domain\Tweet\Tweet\Date;
 use App\Domain\Tweet\TweetCollection;
 use App\Domain\TweetAggregateResult\TweetAggregateResult\Daily;
+use App\Domain\TweetAggregateResult\TweetAggregateResult\Daily\Date;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Collection;
 
