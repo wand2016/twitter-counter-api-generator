@@ -20,11 +20,21 @@ class QueryStringifier
      */
     public function stringifyMatch(Match $match): string
     {
+        return $this->doStringifyMatch($match, true);
+    }
+
+    /**
+     * @param Match $match
+     * @param bool $topLevel
+     * @return string
+     */
+    private function doStringifyMatch(Match $match, bool $topLevel = false): string
+    {
         if ($match instanceof Match\LogicalAnd) {
-            return $this->stringifyLogicalAnd($match);
+            return $this->stringifyLogicalAnd($match, $topLevel);
         }
         if ($match instanceof Match\LogicalOr) {
-            return $this->stringifyLogicalOr($match);
+            return $this->stringifyLogicalOr($match, $topLevel);
         }
         if ($match instanceof Match\Keyword) {
             return $this->stringifyKeyword($match);
@@ -38,32 +48,38 @@ class QueryStringifier
 
     /**
      * @param Match\LogicalAnd $logicalAnd
+     * @param bool $topLevel
      * @return string
      */
-    private function stringifyLogicalAnd(Match\LogicalAnd $logicalAnd): string
+    private function stringifyLogicalAnd(Match\LogicalAnd $logicalAnd, bool $topLevel = false): string
     {
-        return collect($logicalAnd->getChildren())
+        $ret = collect($logicalAnd->getChildren())
             ->map(
                 function (Match $child): string {
-                    return $this->stringifyMatch($child);
+                    return $this->doStringifyMatch($child);
                 }
             )
             ->join(' ');
+
+        return $topLevel ? $ret : sprintf('%s', $ret);
     }
 
     /**
      * @param Match\LogicalOr $logicalOr
+     * @param bool $topLevel
      * @return string
      */
-    private function stringifyLogicalOr(Match\LogicalOr $logicalOr): string
+    private function stringifyLogicalOr(Match\LogicalOr $logicalOr, bool $topLevel = false): string
     {
-        return collect($logicalOr->getChildren())
+        $ret = collect($logicalOr->getChildren())
             ->map(
                 function (Match $child): string {
-                    return sprintf('(%s)', $this->stringifyMatch($child));
+                    return $this->doStringifyMatch($child);
                 }
             )
             ->join(' OR ');
+
+        return $topLevel ? $ret : sprintf('(%s)', $ret);
     }
 
     /**
