@@ -23,7 +23,7 @@ class SearchRecentTweetsGatewayTest extends TestCase
     public function testCall(): void
     {
         $request = new SearchRecentTweetsGateway\RequestDto(
-            '#しこにっき',
+            'from:d_horiyama_ota -is:retweet タペストリー',
             null,
             null,
             [new TweetField\CreatedAt()],

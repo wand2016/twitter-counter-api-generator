@@ -4,7 +4,11 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Gateway\Twitter;
 
+use App\Exceptions\TwitterApi\AuthorizationFailedException;
+use App\Exceptions\TwitterApi\AuthorizationTokenParseFailedException;
+use Exception;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\BadResponseException;
 
 /**
  * Class OAuth2TokenGateway
@@ -31,12 +35,12 @@ class OAuth2TokenGateway
         $this->client = $client;
     }
 
-
     /**
      * @param string $consumerKey
      * @param string $consumerSecretKey
      * @return string
-     * TODO: specify exception
+     * @throws AuthorizationFailedException
+     * @throws AuthorizationTokenParseFailedException
      */
     public function generateBearerToken(
         string $consumerKey,
@@ -44,18 +48,22 @@ class OAuth2TokenGateway
     ): string {
         $bearerTokenCredentials = base64_encode("{$consumerKey}:{$consumerSecretKey}");
 
-        $response = $this->client->post(
-            static::URI,
-            [
-                'headers' => [
-                    'Authorization' => "Basic {$bearerTokenCredentials}",
-                    'Content-Type' => 'application/x-www-form-urlencoded;charset=UTF-8',
-                ],
-                'form_params' => [
-                    'grant_type' => 'client_credentials',
-                ],
-            ]
-        );
+        try {
+            $response = $this->client->post(
+                static::URI,
+                [
+                    'headers' => [
+                        'Authorization' => "Basic {$bearerTokenCredentials}",
+                        'Content-Type' => 'application/x-www-form-urlencoded;charset=UTF-8',
+                    ],
+                    'form_params' => [
+                        'grant_type' => 'client_credentials',
+                    ],
+                ]
+            );
+        } catch (BadResponseException $e) {
+            throw new AuthorizationFailedException($e);
+        }
 
         return $this->parseAccessToken($response->getBody()->getContents());
     }
@@ -64,9 +72,14 @@ class OAuth2TokenGateway
      * @param string $responseContents
      *        example: "{"token_type":"bearer","access_token":"xxx..."}"
      * @return string
+     * @throws AuthorizationTokenParseFailedException
      */
     private function parseAccessToken(string $responseContents): string
     {
-        return \json_decode($responseContents)->access_token;
+        try {
+            return \json_decode($responseContents)->access_token;
+        } catch (Exception $e) {
+            throw new AuthorizationTokenParseFailedException($responseContents, 0, $e);
+        }
     }
 }

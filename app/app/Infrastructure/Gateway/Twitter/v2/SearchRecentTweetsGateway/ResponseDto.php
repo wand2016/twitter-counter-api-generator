@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway;
 
+use App\Exceptions\TwitterApi\SearchRecentResponseParseFailedException;
+
 /**
  * Class ResponseDto
  * @package App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway
@@ -27,6 +29,7 @@ final class ResponseDto
     /**
      * @param string $raw
      * @return static
+     * @throws SearchRecentResponseParseFailedException
      */
     public static function createFromResponseContents(string $raw): self
     {

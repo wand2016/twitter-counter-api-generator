@@ -51,6 +51,8 @@ class BearerTokenPool
 
     /**
      * @return string
+     * @throws \App\Exceptions\TwitterApi\AuthorizationFailedException
+     * @throws \App\Exceptions\TwitterApi\AuthorizationTokenParseFailedException
      */
     public function getBearerToken(): string
     {

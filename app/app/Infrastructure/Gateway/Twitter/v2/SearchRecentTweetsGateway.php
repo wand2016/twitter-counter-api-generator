@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Gateway\Twitter\v2;
 
+use App\Exceptions\TwitterApi\SearchRecentFailedException;
 use App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway\RequestDto;
 use App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway\ResponseDto;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\BadResponseException;
 
 /**
  * Class SearchRecentTweetsGateway
@@ -40,25 +42,31 @@ class SearchRecentTweetsGateway
         $this->bearerTokenPool = $bearerTokenPool;
     }
 
-
     /**
      * @param RequestDto $request
      * @return ResponseDto
-     * TODO: specify throws
+     * @throws SearchRecentFailedException
+     * @throws \App\Exceptions\TwitterApi\AuthorizationFailedException
+     * @throws \App\Exceptions\TwitterApi\AuthorizationTokenParseFailedException
+     * @throws \App\Exceptions\TwitterApi\SearchRecentResponseParseFailedException
      */
     public function call(RequestDto $request): ResponseDto
     {
         $bearerToken = $this->bearerTokenPool->getBearerToken();
 
-        $response = $this->client->get(
-            static::URI,
-            [
-                'query' => $request->toQueryParameters(),
-                'headers' => [
-                    'Authorization' => "Bearer ${bearerToken}",
-                ],
-            ]
-        );
+        try {
+            $response = $this->client->get(
+                static::URI,
+                [
+                    'query' => $request->toQueryParameters(),
+                    'headers' => [
+                        'Authorization' => "Bearer ${bearerToken}",
+                    ],
+                ]
+            );
+        } catch (BadResponseException $e) {
+            throw new SearchRecentFailedException($e);
+        }
 
         return ResponseDto::createFromResponseContents($response->getBody()->getContents());
     }
