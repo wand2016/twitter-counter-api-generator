@@ -1,15 +1,15 @@
 <?php
 
-declare(strict_type=1);
+declare(strict_types=1);
 
-namespace App\Domain\Tweet\AggregateResult;
+namespace App\Domain\TweetAggregateResult\TweetAggregateResult;
 
-use App\Domain\Tweet\Date\Date;
+use App\Domain\Tweet\Tweet\Date;
 use DomainException;
 
 /**
  * Class Daily
- * @package App\Domain\Tweet\AggregateResult
+ * @package App\Domain\TweetAggregateResult\TweetAggregateResult
  */
 class Daily
 {

@@ -1,5 +1,7 @@
 @startuml
 
+package TweetSearchAggregateResultApi{
+
 class tweet検索集計結果APIコレクション {
  + 登録(tweet検索集計結果API)
  + 読込(tweet検索集計結果APIのID): tweet検索条件
@@ -13,17 +15,9 @@ class tweet検索集計結果API {
 
 tweet検索集計結果APIコレクション o-- tweet検索集計結果API
 
-
-class tweet検索条件{
-  + 開始日
-  + 終了日
-  + 検索対象twitterアカウントユーザー名: string
-  + 検索キーワード: string[]
 }
 
-tweet検索集計結果API -- tweet検索条件
-
-
+package Tweet {
 
 class tweet {
   + 日時
@@ -36,6 +30,21 @@ class tweetコレクション{
 
 tweetコレクション o-d- tweet
 
+class tweet検索条件{
+  + 開始日
+  + 終了日
+  + 検索対象twitterアカウントユーザー名: string
+  + 検索キーワード: string[]
+}
+
+}
+
+
+tweet検索集計結果API -- tweet検索条件
+
+
+
+package TweetAggregateResult{
 
 class tweet検索集計結果
 tweet検索集計結果 o-- tweet検索条件
@@ -45,10 +54,12 @@ class 日次tweet数 {
   + 件数
 }
 
+tweet検索集計結果 o-d- 日次tweet数
+
+}
 
 tweet検索条件 -- tweetコレクション
 
-tweet検索集計結果 o-d- 日次tweet数
 tweet検索集計結果API -- tweet検索集計結果
 
 
