@@ -30,12 +30,18 @@ class tweetコレクション{
 
 tweetコレクション o-d- tweet
 
-class tweet検索条件{
+class tweet検索期間{
   + 開始日
   + 終了日
+}
+
+class tweet検索条件{
+  + twitter検索期間
   + 検索対象twitterアカウントユーザー名: string
   + 検索キーワード: string[]
 }
+
+tweet検索条件 o-- tweet検索期間
 
 }
 
