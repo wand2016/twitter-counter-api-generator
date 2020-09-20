@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway\Dto;
 
+use App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway\Dto\Common\Token;
 use App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway\Dto\RequestDto\MaxResults;
 use App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway\Dto\RequestDto\TweetField;
 use DateTimeInterface;
@@ -42,9 +43,9 @@ final class RequestDto
 
     /**
      * for fetching over 100 tweets
-     * @var string|null
+     * @var Token|null
      */
-    private ?string $sinceId;
+    private ?Token $nextToken;
 
     /**
      * RequestDto constructor.
@@ -53,7 +54,7 @@ final class RequestDto
      * @param DateTimeInterface|null $endTime
      * @param TweetField[]|iterable $tweetFields
      * @param MaxResults|null $maxResults
-     * @param string|null $sinceId
+     * @param Token|null $nextToken
      */
     public function __construct(
         string $query,
@@ -61,15 +62,16 @@ final class RequestDto
         ?DateTimeInterface $endTime,
         iterable $tweetFields,
         ?MaxResults $maxResults,
-        ?string $sinceId
+        ?Token $nextToken = null
     ) {
         $this->query = $query;
         $this->startTime = $startTime;
         $this->endTime = $endTime;
         $this->tweetFields = $tweetFields;
         $this->maxResults = $maxResults;
-        $this->sinceId = $sinceId;
+        $this->nextToken = $nextToken;
     }
+
 
     /**
      * TODO: impl
@@ -89,6 +91,11 @@ final class RequestDto
         $maxResults = $this->buildMaxResults();
         if ($maxResults) {
             $ret['max_results'] = $maxResults;
+        }
+
+        $nextToken = $this->buildNextToken();
+        if ($nextToken) {
+            $ret['next_token'] = $nextToken;
         }
 
         return $ret;
@@ -114,5 +121,13 @@ final class RequestDto
     private function buildMaxResults(): ?int
     {
         return $this->maxResults ? $this->maxResults->getValue() : null;
+    }
+
+    /**
+     * @return string|null
+     */
+    private function buildNextToken(): ?string
+    {
+        return $this->nextToken ? $this->nextToken->getValue() : null;
     }
 }

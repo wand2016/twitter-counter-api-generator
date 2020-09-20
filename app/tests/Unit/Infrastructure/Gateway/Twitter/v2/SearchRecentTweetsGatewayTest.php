@@ -22,6 +22,8 @@ class SearchRecentTweetsGatewayTest extends TestCase
 
     public function testCall(): void
     {
+        $this->markTestSkipped('external api call');
+
         $requestDto = new SearchRecentTweetsGateway\Dto\RequestDto(
             'ごちうさ',
             null,
