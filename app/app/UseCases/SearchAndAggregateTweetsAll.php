@@ -37,8 +37,9 @@ final class SearchAndAggregateTweetsAll
 
 
     /**
+     * @throws \App\Exceptions\TweetAggregateResult\TweetAggregateResultParseFailedException
+     * @throws \App\Exceptions\TweetAggregateResult\TweetAggregateResultPersistFailedException
      * @throws \App\Exceptions\Tweet\TweetSearchFailedException
-     * TODO: specify errors
      */
     public function run(): void
     {

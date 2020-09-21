@@ -39,11 +39,11 @@ final class SearchAndAggregateTweets
         $this->tweetSearcher = $tweetSearcher;
     }
 
-
     /**
      * @param TweetSearchAggregateResultApi $tweetSearchAggregateResultApi
+     * @throws \App\Exceptions\TweetAggregateResult\TweetAggregateResultParseFailedException
+     * @throws \App\Exceptions\TweetAggregateResult\TweetAggregateResultPersistFailedException
      * @throws \App\Exceptions\Tweet\TweetSearchFailedException
-     * TODO: error handling
      */
     public function run(TweetSearchAggregateResultApi $tweetSearchAggregateResultApi): void
     {

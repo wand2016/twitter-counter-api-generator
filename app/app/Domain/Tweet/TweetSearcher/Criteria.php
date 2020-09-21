@@ -23,8 +23,6 @@ class Criteria
      */
     private Period $period;
 
-    // TODO: filter
-
     /**
      * Criteria constructor.
      * @param Match $match
