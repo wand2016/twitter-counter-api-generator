@@ -18,4 +18,10 @@ interface TweetSearchAggregateResultApiRepository
      * TODO: specify throws
      */
     public function findById(Id $id): TweetSearchAggregateResultApi;
+
+    /**
+     * @return iterable|TweetSearchAggregateResultApi[]
+     * TODO: specify throws
+     */
+    public function findAll(): iterable;
 }

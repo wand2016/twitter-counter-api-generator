@@ -32,4 +32,12 @@ final class EndpointName
     {
         return $this->value;
     }
+
+    /**
+     * @return string
+     */
+    public function getJsonName(): string
+    {
+        return $this->value . '.json';
+    }
 }

@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace App\Domain\Tweet;
 
 /**
- * Class TweetCollection
+ * Class TweetSearchResult
  * @package App\Domain\Tweet
  */
-class TweetCollection
+class TweetSearchResult
 {
     /**
      * @var Tweet[]
@@ -16,7 +16,7 @@ class TweetCollection
     private array $tweets;
 
     /**
-     * TweetCollection constructor.
+     * TweetSearchResult constructor.
      * @param Tweet ...$tweets
      */
     public function __construct(Tweet ...$tweets)
