@@ -10,41 +10,37 @@ jobs:
     runs-on: ubuntu-latest
 
     services:
-      db:
-        image: mysql:8.0
+      localstack:
+        image: localstack/localstack
         ports:
-          - 3306:3306
-        options: --health-cmd "mysqladmin ping -h 127.0.0.1" --health-interval 3s --health-timeout 3s --health-retries 10
+          - 4566:4566
+        options: --health-cmd "AWS_ACCESS_KEY_ID=fake AWS_SECRET_ACCESS_KEY=fake aws --endpoint-url=http://localhost:4566 s3 ls" --health-interval 3s --health-timeout 3s --health-retries 10
         env:
-          MYSQL_DATABASE: default
-          MYSQL_USER: user
-          MYSQL_PASSWORD: pass
-          MYSQL_ROOT_PASSWORD: pass
-          TZ: Asia/Tokyo
+          LOCALSTACK_SERVICES: s3,dynamodb
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Copy .env
-      run: |
-        cp .env.example .env
-        echo "CONSUMER_KEY=${{ secrets.CONSUMER_KEY }}" >> .env
-        echo "CONSUMER_SECRET=${{ secrets.CONSUMER_SECRET }}" >> .env
-      working-directory: app
-    - name: name resolution
-      run: |
-        echo '127.0.0.1 db' | sudo tee -a /etc/hosts
-    - name: Install Dependencies
-      run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
-      working-directory: app
-    - name: Generate key
-      run: php artisan key:generate
-      working-directory: app
-    - name: Directory Permissions
-      run: chmod -R 777 storage bootstrap/cache
-      working-directory: app
-    - name: Execute static analysis via Larastan
-      run: vendor/bin/phpstan analyse
-      working-directory: app
-    - name: Execute tests (Unit and Feature tests) via PHPUnit
-      run: vendor/bin/phpunit
-      working-directory: app
+      - uses: actions/checkout@v2
+      - name: Copy .env
+        run: |
+          cp .env.example .env
+          echo "CONSUMER_KEY=${{ secrets.CONSUMER_KEY }}" >> .env
+          echo "CONSUMER_SECRET=${{ secrets.CONSUMER_SECRET }}" >> .env
+        working-directory: app
+      - name: name resolution
+        run: |
+          echo '127.0.0.1 localstack' | sudo tee -a /etc/hosts
+      - name: Install Dependencies
+        run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+        working-directory: app
+      - name: Generate key
+        run: php artisan key:generate
+        working-directory: app
+      - name: Directory Permissions
+        run: chmod -R 777 storage bootstrap/cache
+        working-directory: app
+      - name: Execute static analysis via Larastan
+        run: vendor/bin/phpstan analyse
+        working-directory: app
+      - name: Execute tests (Unit and Feature tests) via PHPUnit
+        run: vendor/bin/phpunit
+        working-directory: app
