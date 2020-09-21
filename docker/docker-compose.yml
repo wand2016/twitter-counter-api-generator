@@ -35,18 +35,9 @@ services:
       - DOCUMENT_ROOT=${DOCUMENT_ROOT}
     working_dir: /var/www/${DOCUMENT_ROOT}
 
-  db:
-    image: mysql:8.0
-    volumes:
-      - db-store:/var/lib/mysql
-      - ./log/:/var/log/mysql
-      - ./docker/mysql/my.cnf:/etc/mysql/conf.d/my.cnf
+  localstack:
+    image: localstack/localstack
+    ports:
+      - 4566:4566
     environment:
-      - MYSQL_DATABASE=${DB_NAME}
-      - MYSQL_USER=${DB_USER}
-      - MYSQL_PASSWORD=${DB_PASS}
-      - MYSQL_ROOT_PASSWORD=${DB_PASS}
-      - TZ=${TZ}
-
-volumes:
-  db-store:
+      - "LOCALSTACK_SERVICES=s3,dynamodb"
