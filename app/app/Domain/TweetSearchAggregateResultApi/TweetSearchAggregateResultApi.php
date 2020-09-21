@@ -15,9 +15,9 @@ use App\Domain\TweetSearchAggregateResultApi\TweetSearchAggregateResultApi\Id;
 class TweetSearchAggregateResultApi
 {
     /**
-     * @var Id|null
+     * @var Id
      */
-    private ?Id $id;
+    private Id $id;
 
     /**
      * @var EndpointName
@@ -31,11 +31,11 @@ class TweetSearchAggregateResultApi
 
     /**
      * TweetSearchAggregateResultApi constructor.
-     * @param Id|null $id
+     * @param Id $id
      * @param EndpointName $endpointName
      * @param Criteria $searchCriteria
      */
-    public function __construct(?Id $id, EndpointName $endpointName, Criteria $searchCriteria)
+    public function __construct(Id $id, EndpointName $endpointName, Criteria $searchCriteria)
     {
         $this->id = $id;
         $this->endpointName = $endpointName;
@@ -43,9 +43,9 @@ class TweetSearchAggregateResultApi
     }
 
     /**
-     * @return Id|null
+     * @return Id
      */
-    public function getId(): ?Id
+    public function getId(): Id
     {
         return $this->id;
     }

@@ -1,7 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Providers;
 
+use App\Domain\TweetAggregateResult\TweetAggregateResultRepository as TweetAggregateResultRepositoryInterface;
+use App\Infrastructure\Domain\TweetAggregateResult\TweetAggregateResultRepository;
 use App\Infrastructure\Gateway\Twitter\OAuth2TokenGateway;
 use App\Infrastructure\Gateway\Twitter\v2\BearerTokenPool;
 use Illuminate\Contracts\Container\Container;
@@ -30,6 +34,11 @@ class AppServiceProvider extends ServiceProvider implements DeferrableProvider
                     $consumerSecret
                 );
             }
+        );
+
+        $this->app->singleton(
+            TweetAggregateResultRepositoryInterface::class,
+            TweetAggregateResultRepository::class
         );
     }
 
