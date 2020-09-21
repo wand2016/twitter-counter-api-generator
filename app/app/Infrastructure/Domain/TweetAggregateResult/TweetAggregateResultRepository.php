@@ -7,7 +7,14 @@ namespace App\Infrastructure\Domain\TweetAggregateResult;
 use App\Domain\TweetAggregateResult\TweetAggregateResult;
 use App\Domain\TweetAggregateResult\TweetAggregateResultRepository as TweetAggregateResultRepositoryInterface;
 use App\Domain\TweetSearchAggregateResultApi\TweetSearchAggregateResultApi\EndpointName;
+use App\Exceptions\TweetAggregateResult\TweetAggregateResultNotFoundException;
+use App\Exceptions\TweetAggregateResult\TweetAggregateResultParseFailedException;
+use Carbon\CarbonImmutable;
+use Exception;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
+use stdClass;
 
 /**
  * Class TweetAggregateResultRepository
@@ -20,11 +27,19 @@ class TweetAggregateResultRepository implements TweetAggregateResultRepositoryIn
      */
     public function findByEndpointName(EndpointName $endpointName): TweetAggregateResult
     {
-        $obj = Storage::cloud()->get($endpointName->getJsonName());
+        try {
+            $s3Object = $this->tryFetch($endpointName);
+        } catch (FileNotFoundException $e) {
+            throw new TweetAggregateResultNotFoundException($endpointName, 0, $e);
+        }
 
-        // TODO: Implement findByEndpointName() method.
-        
-        return new TweetAggregateResult();
+        try {
+            $dailyAggregateResults = $this->tryHydrate($s3Object);
+        } catch (Exception $e) {
+            throw new TweetAggregateResultParseFailedException($s3Object, 0, $e);
+        }
+
+        return new TweetAggregateResult(...$dailyAggregateResults);
     }
 
     /**
@@ -33,5 +48,36 @@ class TweetAggregateResultRepository implements TweetAggregateResultRepositoryIn
     public function persist(TweetAggregateResult $tweetAggregateResult): void
     {
         // TODO: Implement persist() method.
+    }
+
+
+    /**
+     * @param EndpointName $endpointName
+     * @return string
+     * @throws FileNotFoundException
+     */
+    private function tryFetch(EndpointName $endpointName): string
+    {
+        return Storage::cloud()->get($endpointName->getJsonName());
+    }
+
+    /**
+     * @param string $s3Object
+     * @return Collection
+     */
+    private function tryHydrate(string $s3Object): Collection
+    {
+        return collect(json_decode($s3Object))
+            ->map(
+                function (stdClass $tuple): TweetAggregateResult\Daily {
+                    return new TweetAggregateResult\Daily(
+                        new TweetAggregateResult\Daily\Date(
+                            CarbonImmutable::createFromFormat('Y-m-d', $tuple->date)
+                                ->startOfDay()
+                        ),
+                        $tuple->count
+                    );
+                }
+            );
     }
 }

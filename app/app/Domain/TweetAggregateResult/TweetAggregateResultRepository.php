@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Domain\TweetAggregateResult;
 
 use App\Domain\TweetSearchAggregateResultApi\TweetSearchAggregateResultApi\EndpointName;
+use App\Exceptions\TweetAggregateResult\TweetAggregateResultNotFoundException;
+use App\Exceptions\TweetAggregateResult\TweetAggregateResultParseFailedException;
 
 /**
  * Interface TweetAggregateResultRepository
@@ -15,7 +17,8 @@ interface TweetAggregateResultRepository
     /**
      * @param EndpointName $endpointName
      * @return TweetAggregateResult
-     * TODO: specify error
+     * @throws TweetAggregateResultNotFoundException
+     * @throws TweetAggregateResultParseFailedException
      */
     public function findByEndpointName(EndpointName $endpointName): TweetAggregateResult;
 
