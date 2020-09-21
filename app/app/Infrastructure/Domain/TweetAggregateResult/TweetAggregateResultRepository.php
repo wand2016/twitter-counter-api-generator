@@ -68,6 +68,10 @@ class TweetAggregateResultRepository implements TweetAggregateResultRepositoryIn
                 $tweetAggregateResult->getEndpointName()->getJsonName(),
                 $content
             );
+            Storage::cloud()->setVisibility(
+                $tweetAggregateResult->getEndpointName()->getJsonName(),
+                'public'
+            );
         } catch (Exception $e) {
             throw new TweetAggregateResultPersistFailedException(
                 $tweetAggregateResult->getEndpointName(),
