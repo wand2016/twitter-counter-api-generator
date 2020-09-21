@@ -26,8 +26,6 @@ class OAuth2TokenGatewayTest extends TestCase
 
         $bearerToken = $this->sut->generateBearerToken($consumerKey, $consumerSecret);
 
-        var_dump($bearerToken);
-
         $this->assertStringStartsWith(
             'AAAA',
             $bearerToken
