@@ -21,6 +21,8 @@ class TweetSearcherTest extends TestCase
 
     public function testSearch(): void
     {
+        $this->markTestSkipped('external API call');
+
         $criteria = new TweetSearcher\Criteria(
             new TweetSearcher\Criteria\Match\LogicalAnd(
                 new TweetSearcher\Criteria\Match\Keyword('ごちうさ'),

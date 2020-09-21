@@ -21,8 +21,6 @@ class OAuth2TokenGatewayTest extends TestCase
 
     public function testGenerateBearerToken(): void
     {
-        $this->markTestSkipped('external API call module driver');
-
         $consumerKey = config()->get('twitter.credentials.consumerKey');
         $consumerSecret = config()->get('twitter.credentials.consumerSecret');
 
