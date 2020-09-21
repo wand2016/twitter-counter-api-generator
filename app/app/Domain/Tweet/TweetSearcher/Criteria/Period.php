@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\Tweet\TweetSearcher\Criteria;
 
 use Carbon\CarbonImmutable;
+use DateTimeInterface;
 use InvalidArgumentException;
 
 /**
@@ -14,32 +15,50 @@ use InvalidArgumentException;
 final class Period
 {
     /**
-     * @var CarbonImmutable
+     * @var DateTimeInterface|null
      */
-    private CarbonImmutable $startDate;
+    private ?DateTimeInterface $startDate;
 
     /**
-     * @var CarbonImmutable
+     * @var DateTimeInterface|null
      */
-    private CarbonImmutable $endDate;
+    private ?DateTimeInterface $endDate;
 
     /**
      * Period constructor.
-     * @param CarbonImmutable $startDate
-     * @param CarbonImmutable $endDate
+     * @param DateTimeInterface|null $startDate
+     * @param DateTimeInterface|null $endDate
      */
-    public function __construct(CarbonImmutable $startDate, CarbonImmutable $endDate)
-    {
-        if (!$startDate->isStartOfDay()) {
+    private function __construct(
+        ?DateTimeInterface $startDate,
+        ?DateTimeInterface $endDate
+    ) {
+        if ($startDate && !CarbonImmutable::instance($startDate)->isStartOfDay()) {
             throw new InvalidArgumentException('startDate must be start of day.');
         }
 
-        if (!$endDate->isStartOfDay()) {
+        if ($endDate && !CarbonImmutable::instance($endDate)->isStartOfDay()) {
             throw new InvalidArgumentException('endDate must be start of day.');
         }
 
         $this->startDate = $startDate;
         $this->endDate = $endDate;
+    }
+
+    /**
+     * @return DateTimeInterface|null
+     */
+    public function getStartDate()
+    {
+        return $this->startDate;
+    }
+
+    /**
+     * @return DateTimeInterface|null
+     */
+    public function getEndDate()
+    {
+        return $this->endDate;
     }
 
 
@@ -82,7 +101,7 @@ final class Period
     ): self {
         return new static(
             static::makeStartDate($startYear, $startMonth, $startDay),
-            CarbonImmutable::maxValue()->startOfDay()
+            null
         );
     }
 
@@ -98,7 +117,7 @@ final class Period
         int $endDay
     ): self {
         return new static(
-            CarbonImmutable::minValue()->startOfDay(),
+            null,
             static::makeEndDate($endYear, $endMonth, $endDay)
         );
     }
@@ -108,7 +127,7 @@ final class Period
      */
     public static function unbound(): self
     {
-        return new static(CarbonImmutable::minValue()->startOfDay(), CarbonImmutable::maxValue()->startOfDay());
+        return new static(null, null);
     }
 
     /**

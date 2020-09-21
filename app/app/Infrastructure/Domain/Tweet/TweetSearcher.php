@@ -9,6 +9,7 @@ use App\Domain\Tweet\TweetCollection;
 use App\Domain\Tweet\TweetSearcher as TweetSearcherInterface;
 use App\Domain\Tweet\TweetSearcher\Criteria;
 use App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway;
+use App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway\Dto\Common\Token;
 use App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway\Dto\RequestDtoFactory;
 
 /**
@@ -47,18 +48,31 @@ class TweetSearcher implements TweetSearcherInterface
      */
     public function search(Criteria $criteria): TweetCollection
     {
-        $requestDto = $this->requestDtoFactory->createFromCriteria($criteria);
+        $tweets = collect([]);
+        /** @var Token|null $nextToken */
+        $nextToken = null;
 
-        $responseDto = $this->searchRecentTweetsGateway->call($requestDto);
+        $trials = 0;
 
-        $tweets = collect($responseDto->getData())
-            ->map(
-                function (SearchRecentTweetsGateway\Dto\ResponseDto\Datum $datum): Tweet {
-                    return Tweet::create(
-                        $datum->getCreatedAt()
-                    );
-                }
-            );
+        do {
+            $requestDto = $this->requestDtoFactory->createFromCriteria($criteria, $nextToken);
+
+            $responseDto = $this->searchRecentTweetsGateway->call($requestDto);
+            $nextToken = $responseDto->getMeta()->getNextToken();
+
+            $chunk = collect($responseDto->getData())
+                ->map(
+                    function (SearchRecentTweetsGateway\Dto\ResponseDto\Datum $datum): Tweet {
+                        return Tweet::create(
+                            $datum->getCreatedAt()
+                        );
+                    }
+                );
+
+            $tweets = $tweets->concat($chunk);
+
+            ++$trials;
+        } while ($nextToken && $trials < 20);
 
         return new TweetCollection(...$tweets);
     }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway\Dto;
 
 use App\Domain\Tweet\TweetSearcher\Criteria;
+use App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway\Dto\Common\Token;
 use App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway\Dto\RequestDto\MaxResults;
 use App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway\Dto\RequestDto\TweetField\CreatedAt;
 use App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway\Dto\RequestDtoFactory\QueryStringifier;
@@ -31,20 +32,22 @@ class RequestDtoFactory
 
     /**
      * @param Criteria $criteria
+     * @param Token|null $nextToken
      * @return RequestDto
      */
-    public function createFromCriteria(Criteria $criteria): RequestDto
-    {
+    public function createFromCriteria(
+        Criteria $criteria,
+        ?Token $nextToken
+    ): RequestDto {
         $query = $this->queryStringifier->stringifyMatch($criteria->getMatch());
 
-        // TODO: impl
         return new RequestDto(
             $query,
-            null,
-            null,
+            $criteria->getPeriod()->getStartDate(),
+            $criteria->getPeriod()->getEndDate(),
             [new CreatedAt()],
             MaxResults::max(),
-            null
+            $nextToken
         );
     }
 }
