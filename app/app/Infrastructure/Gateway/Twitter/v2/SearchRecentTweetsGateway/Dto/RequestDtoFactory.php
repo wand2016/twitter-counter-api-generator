@@ -6,6 +6,7 @@ namespace App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway\Dto;
 
 use App\Domain\Tweet\TweetSearcher\Criteria;
 use App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway\Dto\RequestDto\MaxResults;
+use App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway\Dto\RequestDto\TweetField\CreatedAt;
 use App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway\Dto\RequestDtoFactory\QueryStringifier;
 
 /**
@@ -41,7 +42,7 @@ class RequestDtoFactory
             $query,
             null,
             null,
-            [],
+            [new CreatedAt()],
             MaxResults::max(),
             null
         );

@@ -82,7 +82,7 @@ final class Period
     ): self {
         return new static(
             static::makeStartDate($startYear, $startMonth, $startDay),
-            CarbonImmutable::maxValue()
+            CarbonImmutable::maxValue()->startOfDay()
         );
     }
 
@@ -98,7 +98,7 @@ final class Period
         int $endDay
     ): self {
         return new static(
-            CarbonImmutable::minValue(),
+            CarbonImmutable::minValue()->startOfDay(),
             static::makeEndDate($endYear, $endMonth, $endDay)
         );
     }
@@ -108,7 +108,7 @@ final class Period
      */
     public static function unbound(): self
     {
-        return new static(CarbonImmutable::minValue(), CarbonImmutable::maxValue());
+        return new static(CarbonImmutable::minValue()->startOfDay(), CarbonImmutable::maxValue()->startOfDay());
     }
 
     /**
