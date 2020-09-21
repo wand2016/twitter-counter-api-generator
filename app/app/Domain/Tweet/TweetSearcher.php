@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\Tweet;
 
 use App\Domain\Tweet\TweetSearcher\Criteria;
-use App\Exceptions\Tweet\TweetSearchException;
+use App\Exceptions\Tweet\TweetSearchFailedException;
 
 /**
  * Interface TweetSearcher
@@ -16,7 +16,7 @@ interface TweetSearcher
     /**
      * @param Criteria $criteria
      * @return TweetCollection
-     * @throws TweetSearchException
+     * @throws TweetSearchFailedException
      */
     public function search(Criteria $criteria): TweetCollection;
 }

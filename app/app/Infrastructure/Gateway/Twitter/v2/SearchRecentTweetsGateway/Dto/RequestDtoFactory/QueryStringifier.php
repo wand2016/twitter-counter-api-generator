@@ -2,15 +2,14 @@
 
 declare(strict_types=1);
 
-namespace App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway;
+namespace App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway\Dto\RequestDtoFactory;
 
 use App\Domain\Tweet\TweetSearcher\Criteria\Match;
 use InvalidArgumentException;
 
 /**
- * TODO: percent encoding ?
  * Class QueryStringifier
- * @package App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway
+ * @package App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway\Dto\RequestDtoFactory
  */
 class QueryStringifier
 {
@@ -41,6 +40,9 @@ class QueryStringifier
         }
         if ($match instanceof Match\Account) {
             return $this->stringifyAccount($match);
+        }
+        if ($match instanceof Match\NotRetweet) {
+            return $this->stringifyNotRetweet($match);
         }
 
         throw new InvalidArgumentException('unprocessable Match object: ' . get_class($match));
@@ -98,5 +100,14 @@ class QueryStringifier
     private function stringifyAccount(Match\Account $account): string
     {
         return "from:{$account->getValue()}";
+    }
+
+    /**
+     * @param Match\NotRetweet $notRetweet
+     * @return string
+     */
+    private function stringifyNotRetweet(Match\NotRetweet $notRetweet): string
+    {
+        return '-is:retweet';
     }
 }

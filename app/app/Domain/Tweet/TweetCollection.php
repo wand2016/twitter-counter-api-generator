@@ -11,9 +11,9 @@ namespace App\Domain\Tweet;
 class TweetCollection
 {
     /**
-     * @var iterable|Tweet[]
+     * @var Tweet[]
      */
-    private iterable $tweets;
+    private array $tweets;
 
     /**
      * TweetCollection constructor.
@@ -25,10 +25,18 @@ class TweetCollection
     }
 
     /**
-     * @return Tweet[]|iterable
+     * @return Tweet[]
      */
-    public function getTweets(): iterable
+    public function getTweets(): array
     {
         return $this->tweets;
+    }
+
+    /**
+     * @return int
+     */
+    public function count(): int
+    {
+        return count($this->tweets);
     }
 }

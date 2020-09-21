@@ -25,7 +25,10 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Copy .env
-      run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+      run: |
+        cp .env.example .env
+        echo "CONSUMER_KEY=${{ secrets.CONSUMER_KEY }}" >> .env
+        echo "CONSUMER_SECRET=${{ secrets.CONSUMER_SECRET }}" >> .env
       working-directory: app
     - name: name resolution
       run: |
