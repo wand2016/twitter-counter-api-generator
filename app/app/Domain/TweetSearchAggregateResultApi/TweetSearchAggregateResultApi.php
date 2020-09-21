@@ -51,11 +51,11 @@ class TweetSearchAggregateResultApi
     }
 
     /**
-     * @return string
+     * @return EndpointName
      */
-    public function getJsonEndpointName(): string
+    public function getEndpointName(): EndpointName
     {
-        return $this->endpointName->getValue() . '.json';
+        return $this->endpointName;
     }
 
     /**

@@ -6,7 +6,8 @@ namespace App\Infrastructure\Domain\TweetAggregateResult;
 
 use App\Domain\TweetAggregateResult\TweetAggregateResult;
 use App\Domain\TweetAggregateResult\TweetAggregateResultRepository as TweetAggregateResultRepositoryInterface;
-use App\Domain\TweetSearchAggregateResultApi\TweetSearchAggregateResultApi\Id;
+use App\Domain\TweetSearchAggregateResultApi\TweetSearchAggregateResultApi\EndpointName;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * Class TweetAggregateResultRepository
@@ -17,9 +18,12 @@ class TweetAggregateResultRepository implements TweetAggregateResultRepositoryIn
     /**
      * @inheritDoc
      */
-    public function findById(Id $id): TweetAggregateResult
+    public function findByEndpointName(EndpointName $endpointName): TweetAggregateResult
     {
-        // TODO: Implement findById() method.
+        $obj = Storage::cloud()->get($endpointName->getJsonName());
+
+        // TODO: Implement findByEndpointName() method.
+        
         return new TweetAggregateResult();
     }
 

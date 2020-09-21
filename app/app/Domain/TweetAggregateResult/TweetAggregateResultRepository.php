@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\TweetAggregateResult;
 
-use App\Domain\TweetSearchAggregateResultApi\TweetSearchAggregateResultApi\Id;
+use App\Domain\TweetSearchAggregateResultApi\TweetSearchAggregateResultApi\EndpointName;
 
 /**
  * Interface TweetAggregateResultRepository
@@ -13,11 +13,11 @@ use App\Domain\TweetSearchAggregateResultApi\TweetSearchAggregateResultApi\Id;
 interface TweetAggregateResultRepository
 {
     /**
-     * @param Id $id
+     * @param EndpointName $endpointName
      * @return TweetAggregateResult
      * TODO: specify error
      */
-    public function findById(Id $id): TweetAggregateResult;
+    public function findByEndpointName(EndpointName $endpointName): TweetAggregateResult;
 
     /**
      * @param TweetAggregateResult $tweetAggregateResult

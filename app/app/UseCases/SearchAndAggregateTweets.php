@@ -45,8 +45,8 @@ final class SearchAndAggregateTweets
      */
     public function run(TweetSearchAggregateResultApi $tweetSearchAggregateResultApi): void
     {
-        $tweetAggregateResult = $this->tweetAggregateResultRepository->findById(
-            $tweetSearchAggregateResultApi->getId()
+        $tweetAggregateResult = $this->tweetAggregateResultRepository->findByEndpointName(
+            $tweetSearchAggregateResultApi->getEndpointName()
         );
 
         $tweetSearchResult = $this->tweetSearcher->search($tweetSearchAggregateResultApi->getSearchCriteria());
