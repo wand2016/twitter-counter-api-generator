@@ -1,0 +1,85 @@
+@startuml
+
+package TweetSearchAggregateResultApi{
+
+class tweet検索集計結果APIコレクション {
+ + 登録(tweet検索集計結果API)
+ + 読込(tweet検索集計結果APIのID): tweet検索条件
+}
+
+class tweet検索集計結果API<<aggregate>> {
+  + エンドポイント名
+  + 検索対象twitterアカウントユーザー名: string
+  + 検索キーワード: string[]
+}
+
+tweet検索集計結果APIコレクション o-- tweet検索集計結果API
+
+}
+
+package Tweet {
+
+class tweet {
+  + 日時
+}
+
+class tweet検索結果{
+  + 件数: number
+  + 取得(tweet検索条件)
+}
+
+tweet検索結果 o-d- tweet
+
+class tweet検索期間{
+  + 開始日
+  + 終了日
+}
+
+class tweet検索条件{
+  + マッチ条件
+  + twitter検索期間
+}
+
+class マッチ条件 {
+  + 検索対象twitterアカウントユーザー名: string
+  + 検索キーワード: string[]
+}
+
+tweet検索条件 o-- マッチ条件
+tweet検索条件 o-- tweet検索期間
+
+}
+
+tweet検索集計結果API o--- マッチ条件
+
+
+
+package TweetAggregateResult{
+
+class tweet検索集計結果コレクション {
+  + 読込(tweet検索集計結果APIのID)
+}
+
+class tweet検索集計結果<<aggregate>> {
+  + tweet検索集計結果APIのID
+  + tweet検索結果を反映する(tweet検索結果)
+}
+
+tweet検索集計結果コレクション o-- tweet検索集計結果
+tweet検索集計結果 o-- tweet検索条件
+tweet検索集計結果 .l.> tweet検索結果
+class 日次tweet数 {
+  + 年月日
+  + 件数
+}
+
+tweet検索集計結果 o-d- 日次tweet数
+
+}
+
+tweet検索条件 -- tweet検索結果
+
+tweet検索集計結果 -u-> tweet検索集計結果API
+
+
+@enduml

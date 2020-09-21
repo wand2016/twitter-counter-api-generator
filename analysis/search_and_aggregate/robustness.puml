@@ -1,0 +1,68 @@
+@startuml
+
+
+'left to right direction
+
+skinparam control {
+  BackgroundColor<<Alternative>> Gray
+}
+
+usecase 検索集計
+
+actor 定期実行ジョブ
+boundary tweet検索集計実行コマンド
+control 入力検証
+control tweet検索集計結果API読み込み
+entity tweet検索集計結果API
+control tweet検索APIコール
+boundary tweet検索API
+actor twitter
+control tweet検索レスポンスパース
+control tweetコレクション日次集計
+control tweet検索集計結果永続化
+entity tweet検索集計結果
+boundary コマンド戻り値
+
+entity エラーログ
+control エラー処理共通 <<Alternative>>
+control バリデーションエラー処理 <<Alternative>>
+control NotFoundエラー処理 <<Alternative>>
+control tweet検索APIコールエラー処理 <<Alternative>>
+control tweet検索集計結果永続化エラー処理 <<Alternative>>
+control tweet検索集計結果永続化ロールバック <<Alternative>>
+
+
+定期実行ジョブ -d-> tweet検索集計実行コマンド
+tweet検索集計実行コマンド ---d-> 入力検証
+入力検証 -r-> tweet検索条件読み込み
+tweet検索集計結果API読み込み <-d- tweet検索集計結果API
+tweet検索条件読み込み -r-> tweet検索APIコール
+tweet検索APIコール -d- tweet検索API
+tweet検索API -d- twitter
+tweet検索APIコール -> tweet検索レスポンスパース
+tweet検索レスポンスパース -r-> tweetコレクション日次集計
+tweetコレクション日次集計 -r-> tweet検索集計結果永続化
+tweet検索集計結果永続化 -d- tweet検索集計結果
+tweet検索条件 -r- tweet検索集計結果
+tweet検索集計結果永続化 -r-> 検索集計完了通知
+検索集計完了通知 -u--- コマンド戻り値
+コマンド戻り値 -u- 定期実行ジョブ
+
+
+エラー処理共通 -u-> エラーログ
+エラー処理共通 -u-> コマンド戻り値 : exit 1
+
+入力検証 -u-> バリデーションエラー処理
+バリデーションエラー処理 -u-> エラー処理共通
+
+tweet検索条件読み込み -u-> NotFoundエラー処理
+NotFoundエラー処理 -u-> エラー処理共通
+
+tweet検索APIコール -u-> tweet検索APIコールエラー処理
+tweet検索APIコールエラー処理 -u-> エラー処理共通
+
+tweet検索集計結果永続化 -u-> tweet検索集計結果永続化エラー処理
+tweet検索集計結果永続化エラー処理 -r-> tweet検索集計結果永続化ロールバック
+tweet検索集計結果永続化エラー処理 -u-> エラー処理共通
+
+@enduml

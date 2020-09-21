@@ -1,0 +1,44 @@
+@startuml
+
+
+'left to right direction
+
+skinparam control {
+  BackgroundColor<<Alternative>> Gray
+
+}
+
+usecase tweet検索集計結果APIを登録する
+
+actor 利用者
+boundary tweet検索集計結果API登録画面
+entity tweet検索集計結果API
+control tweet検索集計結果API入力値検証
+control tweet検索集計結果API登録内容検証
+control tweet検索集計結果API永続化
+control 登録完了通知
+control エラー処理共通 <<Alternative>>
+control バリデーションエラー処理 <<Alternative>>
+control tweet検索集計結果API永続化エラー処理 <<Alternative>>
+control tweet検索集計結果API永続化ロールバック <<Alternative>>
+boundary 通知窓
+
+利用者 -d-> tweet検索集計結果API登録画面
+tweet検索集計結果API登録画面 -d---> tweet検索集計結果API入力値検証
+tweet検索集計結果API入力値検証 -r-> tweet検索集計結果API登録内容検証
+tweet検索集計結果API登録内容検証 <-d- tweet検索集計結果API
+tweet検索集計結果API登録内容検証 -r-> tweet検索集計結果API永続化
+tweet検索集計結果API永続化 -d-> tweet検索集計結果API
+tweet検索集計結果API永続化 -r-> 登録完了通知
+登録完了通知 -u---> 通知窓
+通知窓 -l-> 利用者
+
+エラー処理共通 -u-> 通知窓
+tweet検索集計結果API入力値検証 -u-> バリデーションエラー処理
+tweet検索集計結果API登録内容検証 -u-> バリデーションエラー処理
+バリデーションエラー処理 -u-> エラー処理共通
+tweet検索集計結果API永続化 -u-> tweet検索集計結果API永続化エラー処理
+tweet検索集計結果API永続化エラー処理 -r-> tweet検索集計結果API永続化ロールバック
+tweet検索集計結果API永続化エラー処理 -u-> エラー処理共通
+
+@enduml
