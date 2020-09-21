@@ -9,6 +9,7 @@ use App\Domain\TweetAggregateResult\TweetAggregateResultRepository as TweetAggre
 use App\Domain\TweetSearchAggregateResultApi\TweetSearchAggregateResultApi\EndpointName;
 use App\Exceptions\TweetAggregateResult\TweetAggregateResultNotFoundException;
 use App\Exceptions\TweetAggregateResult\TweetAggregateResultParseFailedException;
+use App\Exceptions\TweetAggregateResult\TweetAggregateResultPersistFailedException;
 use Carbon\CarbonImmutable;
 use Exception;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
@@ -52,17 +53,29 @@ class TweetAggregateResultRepository implements TweetAggregateResultRepositoryIn
         $data = collect($dailyAggregateResults)
             ->map(
                 function (TweetAggregateResult\Daily $dailyResult): array {
-                    return [];
+                    return [
+                        'date' => $dailyResult->getDate()->format('Y-m-d'),
+                        'count' => $dailyResult->getCount(),
+                    ];
                 }
             )
             ->toArray();
         $content = json_encode($data);
         assert($content !== false);
 
-        Storage::cloud()->put(
-            $tweetAggregateResult->getEndpointName()->getJsonName(),
-            $content
-        );
+        try {
+            Storage::cloud()->put(
+                $tweetAggregateResult->getEndpointName()->getJsonName(),
+                $content
+            );
+        } catch (Exception $e) {
+            throw new TweetAggregateResultPersistFailedException(
+                $tweetAggregateResult->getEndpointName(),
+                $content,
+                0,
+                $e
+            );
+        }
     }
 
 

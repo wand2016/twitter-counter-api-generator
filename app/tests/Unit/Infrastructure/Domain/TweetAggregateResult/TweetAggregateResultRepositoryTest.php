@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Infrastructure\Domain\TweetAggregateResult;
 
+use App\Domain\TweetAggregateResult\TweetAggregateResult;
 use App\Domain\TweetAggregateResult\TweetAggregateResult\Daily;
 use App\Domain\TweetAggregateResult\TweetAggregateResult\Daily\Date;
 use App\Domain\TweetSearchAggregateResultApi\TweetSearchAggregateResultApi\EndpointName;
@@ -39,24 +40,13 @@ class TweetAggregateResultRepositoryTest extends TestCase
             ] + config()->get('filesystems.disks.s3')
         );
 
-        if (!$this->s3client->doesBucketExist(config()->get('filesystems.disks.s3.bucket'))) {
-            $this->s3client->createBucket(
-                [
-                    'Bucket' => config()->get('filesystems.disks.s3.bucket'),
-                ]
-            );
-        }
+        $this->createBucketIfMissing();
     }
 
     protected function tearDown(): void
     {
         Storage::cloud()->delete(self::FIXTURE_FILENAME);
-        $this->s3client->deleteBucket(
-            [
-                'Bucket' => config()->get('filesystems.disks.s3.bucket'),
-                'Force' => true,
-            ]
-        );
+        $this->deleteBucket();
 
         parent::tearDown();
     }
@@ -90,11 +80,59 @@ class TweetAggregateResultRepositoryTest extends TestCase
 
         $this->expectException(TweetAggregateResultNotFoundException::class);
 
-        $tweetAggregateResult = $this->sut->findByEndpointName(new EndpointName('chiyashico'));
+        $this->sut->findByEndpointName(new EndpointName('chiyashico'));
     }
 
     public function testPersist(): void
     {
+        $this->assertFalse(
+            Storage::cloud()->exists(self::FIXTURE_FILENAME)
+        );
+
+        $tweetAggregateResult = TweetAggregateResult::create(
+            new EndpointName('syaroshico'),
+            [
+                new Daily(
+                    Date::create(2020, 7, 15),
+                    4545
+                ),
+            ]
+        );
+
+        $this->sut->persist($tweetAggregateResult);
+
+        $this->assertTrue(
+            Storage::cloud()->exists(self::FIXTURE_FILENAME)
+        );
+        $this->assertSame(
+            '[{"date":"2020-07-15","count":4545}]',
+            Storage::cloud()->get(self::FIXTURE_FILENAME)
+        );
+    }
+
+    public function testPersistOverwrite(): void
+    {
+        $this->setupSyaroshicoFile();
+
+        $tweetAggregateResult = TweetAggregateResult::create(
+            new EndpointName('syaroshico'),
+            [
+                new Daily(
+                    Date::create(2020, 7, 15),
+                    4545
+                ),
+            ]
+        );
+
+        $this->sut->persist($tweetAggregateResult);
+
+        $this->assertTrue(
+            Storage::cloud()->exists(self::FIXTURE_FILENAME)
+        );
+        $this->assertSame(
+            '[{"date":"2020-07-15","count":4545}]',
+            Storage::cloud()->get(self::FIXTURE_FILENAME)
+        );
     }
 
     /**
@@ -132,5 +170,26 @@ class TweetAggregateResultRepositoryTest extends TestCase
         $content = json_encode($data);
         assert($content !== false);
         Storage::cloud()->put(self::FIXTURE_FILENAME, $content);
+    }
+
+    protected function createBucketIfMissing(): void
+    {
+        if (!$this->s3client->doesBucketExist(config()->get('filesystems.disks.s3.bucket'))) {
+            $this->s3client->createBucket(
+                [
+                    'Bucket' => config()->get('filesystems.disks.s3.bucket'),
+                ]
+            );
+        }
+    }
+
+    protected function deleteBucket(): void
+    {
+        $this->s3client->deleteBucket(
+            [
+                'Bucket' => config()->get('filesystems.disks.s3.bucket'),
+                'Force' => true,
+            ]
+        );
     }
 }
