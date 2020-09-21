@@ -30,7 +30,7 @@ class TweetAggregateResultPersistFailedException extends Exception
         parent::__construct(
             'failed to persist AggregateResult.' .
             "EndpointName: {$endpointName->getValue()}," .
-            "RawContent: ${$rawContent}",
+            "RawContent: {$rawContent}",
             $code,
             $previous
         );
