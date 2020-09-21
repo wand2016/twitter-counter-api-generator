@@ -7,6 +7,7 @@ namespace App\Domain\TweetAggregateResult;
 use App\Domain\Tweet\Tweet;
 use App\Domain\Tweet\TweetSearchResult;
 use App\Domain\TweetAggregateResult\TweetAggregateResult\Daily;
+use App\Domain\TweetSearchAggregateResultApi\TweetSearchAggregateResultApi\EndpointName;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Collection;
 
@@ -14,8 +15,13 @@ use Illuminate\Support\Collection;
  * Class TweetAggregateResult
  * @package App\Domain\TweetAggregateResult
  */
-class TweetAggregateResult
+final class TweetAggregateResult
 {
+    /**
+     * @var EndpointName
+     */
+    private EndpointName $endpointName;
+
     /**
      * @var Daily[]
      */
@@ -23,13 +29,19 @@ class TweetAggregateResult
 
     /**
      * TweetAggregateResult constructor.
-     * @param Daily ...$dailyAggregateResults
+     * @param EndpointName $endpointName
      */
-    public function __construct(Daily ...$dailyAggregateResults)
+    private function __construct(EndpointName $endpointName)
     {
-        foreach ($dailyAggregateResults as $dailyAggregateResult) {
-            $this->putDailyAggregateResult($dailyAggregateResult);
-        }
+        $this->endpointName = $endpointName;
+    }
+
+    /**
+     * @return EndpointName
+     */
+    public function getEndpointName(): EndpointName
+    {
+        return $this->endpointName;
     }
 
     /**
@@ -72,5 +84,23 @@ class TweetAggregateResult
     public function putDailyAggregateResult(Daily $dailyAggregateResult): void
     {
         $this->dailyAggregateResultMap[$dailyAggregateResult->getDate()->getTimestamp()] = $dailyAggregateResult;
+    }
+
+    /**
+     * @param EndpointName $endpointName
+     * @param iterable|Daily[] $dailyAggregateResults
+     * @return static
+     */
+    public static function create(
+        EndpointName $endpointName,
+        iterable $dailyAggregateResults = []
+    ): self {
+        $ret = new static($endpointName);
+
+        foreach ($dailyAggregateResults as $dailyAggregateResult) {
+            $ret->putDailyAggregateResult($dailyAggregateResult);
+        }
+
+        return $ret;
     }
 }

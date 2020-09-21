@@ -7,6 +7,7 @@ namespace App\Domain\TweetAggregateResult;
 use App\Domain\TweetSearchAggregateResultApi\TweetSearchAggregateResultApi\EndpointName;
 use App\Exceptions\TweetAggregateResult\TweetAggregateResultNotFoundException;
 use App\Exceptions\TweetAggregateResult\TweetAggregateResultParseFailedException;
+use App\Exceptions\TweetAggregateResult\TweetAggregateResultPersistFailedException;
 
 /**
  * Interface TweetAggregateResultRepository
@@ -24,7 +25,7 @@ interface TweetAggregateResultRepository
 
     /**
      * @param TweetAggregateResult $tweetAggregateResult
-     * TODO: specify error
+     * @throws TweetAggregateResultPersistFailedException
      */
     public function persist(TweetAggregateResult $tweetAggregateResult): void;
 }

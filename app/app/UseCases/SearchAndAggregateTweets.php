@@ -68,7 +68,9 @@ final class SearchAndAggregateTweets
                 $tweetSearchAggregateResultApi->getEndpointName()
             );
         } catch (TweetAggregateResultNotFoundException $e) {
-            $tweetAggregateResult = new TweetAggregateResult();
+            $tweetAggregateResult = TweetAggregateResult::create(
+                $tweetSearchAggregateResultApi->getEndpointName()
+            );
         }
         return $tweetAggregateResult;
     }

@@ -7,6 +7,7 @@ namespace Tests\Unit\Domain\TweetAggregateResult;
 use App\Domain\Tweet\Tweet;
 use App\Domain\Tweet\TweetSearchResult;
 use App\Domain\TweetAggregateResult\TweetAggregateResult;
+use App\Domain\TweetSearchAggregateResultApi\TweetSearchAggregateResultApi\EndpointName;
 use Carbon\CarbonImmutable;
 use PHPUnit\Framework\TestCase;
 
@@ -14,7 +15,7 @@ class TweetAggregateResultTest extends TestCase
 {
     public function testApplySearchResultEmpty(): void
     {
-        $sut = new TweetAggregateResult();
+        $sut = TweetAggregateResult::create(new EndpointName('syaroshico'));
 
         $this->assertEmpty(
             $sut->getDailyAggregateResults()
@@ -23,7 +24,7 @@ class TweetAggregateResultTest extends TestCase
 
     public function testApplySearchResultApplied(): void
     {
-        $sut = new TweetAggregateResult();
+        $sut = TweetAggregateResult::create(new EndpointName('syaroshico'));
 
         $tweetSearchResult = new TweetSearchResult(
             $this->createTweetAt(2020, 10, 1, 0, 0, 0),
@@ -52,9 +53,12 @@ class TweetAggregateResultTest extends TestCase
 
     public function testApplySearchResultOverwritten(): void
     {
-        $sut = new TweetAggregateResult(
-            new TweetAggregateResult\Daily(TweetAggregateResult\Daily\Date::create(2020, 10, 1), 2),
-            new TweetAggregateResult\Daily(TweetAggregateResult\Daily\Date::create(2020, 10, 2), 1),
+        $sut = TweetAggregateResult::create(
+            new EndpointName('syaroshico'),
+            [
+                new TweetAggregateResult\Daily(TweetAggregateResult\Daily\Date::create(2020, 10, 1), 2),
+                new TweetAggregateResult\Daily(TweetAggregateResult\Daily\Date::create(2020, 10, 2), 1),
+            ]
         );
 
         $tweetSearchResult = new TweetSearchResult(

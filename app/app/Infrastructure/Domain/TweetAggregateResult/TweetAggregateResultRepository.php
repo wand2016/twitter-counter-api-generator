@@ -39,7 +39,7 @@ class TweetAggregateResultRepository implements TweetAggregateResultRepositoryIn
             throw new TweetAggregateResultParseFailedException($s3Object, 0, $e);
         }
 
-        return new TweetAggregateResult(...$dailyAggregateResults);
+        return TweetAggregateResult::create($endpointName, $dailyAggregateResults);
     }
 
     /**
@@ -47,7 +47,22 @@ class TweetAggregateResultRepository implements TweetAggregateResultRepositoryIn
      */
     public function persist(TweetAggregateResult $tweetAggregateResult): void
     {
-        // TODO: Implement persist() method.
+        $dailyAggregateResults = $tweetAggregateResult->getDailyAggregateResults();
+
+        $data = collect($dailyAggregateResults)
+            ->map(
+                function (TweetAggregateResult\Daily $dailyResult): array {
+                    return [];
+                }
+            )
+            ->toArray();
+        $content = json_encode($data);
+        assert($content !== false);
+
+        Storage::cloud()->put(
+            $tweetAggregateResult->getEndpointName()->getJsonName(),
+            $content
+        );
     }
 
 
