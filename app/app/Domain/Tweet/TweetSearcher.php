@@ -15,8 +15,8 @@ interface TweetSearcher
 {
     /**
      * @param Criteria $criteria
-     * @return TweetCollection
+     * @return TweetSearchResult
      * @throws TweetSearchFailedException
      */
-    public function search(Criteria $criteria): TweetCollection;
+    public function search(Criteria $criteria): TweetSearchResult;
 }

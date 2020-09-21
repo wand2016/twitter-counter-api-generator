@@ -3,7 +3,7 @@
 namespace Tests\Unit\Domain\TweetAggregateResult;
 
 use App\Domain\Tweet\Tweet;
-use App\Domain\Tweet\TweetCollection;
+use App\Domain\Tweet\TweetSearchResult;
 use App\Domain\TweetAggregateResult\TweetAggregateResult\Daily;
 use App\Domain\TweetAggregateResult\TweetAggregateResult\Daily\Date;
 use App\Domain\TweetAggregateResult\TweetAggregator;
@@ -26,7 +26,7 @@ class TweetAggregatorTest extends TestCase
 
     public function testAggregateEmpty(): void
     {
-        $tweetCollection = new TweetCollection();
+        $tweetCollection = new TweetSearchResult();
 
         $aggregateResult = $this->sut->aggregate($tweetCollection);
 
@@ -37,13 +37,13 @@ class TweetAggregatorTest extends TestCase
 
     public function testAggregate(): void
     {
-        $tweetCollection = new TweetCollection(
+        $tweetSearchResult = new TweetSearchResult(
             $this->createTweetAt(2020, 10, 1, 0, 0, 0),
             $this->createTweetAt(2020, 10, 1, 12, 34, 56),
             $this->createTweetAt(2020, 10, 2, 0, 0, 0),
         );
 
-        $aggregateResult = $this->sut->aggregate($tweetCollection);
+        $aggregateResult = $this->sut->aggregate($tweetSearchResult);
         $dailyCounts = [...$aggregateResult->getDailyCounts()];
 
         $this->assertCount(

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\TweetAggregateResult;
 
 use App\Domain\Tweet\Tweet;
-use App\Domain\Tweet\TweetCollection;
+use App\Domain\Tweet\TweetSearchResult;
 use App\Domain\TweetAggregateResult\TweetAggregateResult\Daily;
 use App\Domain\TweetAggregateResult\TweetAggregateResult\Daily\Date;
 use Carbon\CarbonImmutable;
@@ -18,12 +18,12 @@ use Illuminate\Support\Collection;
 class TweetAggregator
 {
     /**
-     * @param TweetCollection $tweetCollection
+     * @param TweetSearchResult $tweetSearchResult
      * @return TweetAggregateResult
      */
-    public function aggregate(TweetCollection $tweetCollection): TweetAggregateResult
+    public function aggregate(TweetSearchResult $tweetSearchResult): TweetAggregateResult
     {
-        $dailyResults = collect($tweetCollection->getTweets())
+        $dailyResults = collect($tweetSearchResult->getTweets())
             ->groupBy(
                 function (Tweet $tweet): int {
                     return CarbonImmutable::instance($tweet->getTweetedAt())
