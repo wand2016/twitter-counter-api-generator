@@ -80,8 +80,6 @@ class TweetSearcher implements TweetSearcherInterface
         /** @var Token|null $nextToken */
         $nextToken = null;
 
-        $trials = 0;
-
         do {
             $requestDto = $this->requestDtoFactory->createWithCriteria(
                 $criteria,
@@ -102,9 +100,7 @@ class TweetSearcher implements TweetSearcherInterface
                 );
 
             $tweets = $tweets->concat($chunk);
-
-            ++$trials;
-        } while ($nextToken && $trials < 20);
+        } while ($nextToken);
 
         return new TweetCollection(...$tweets);
     }

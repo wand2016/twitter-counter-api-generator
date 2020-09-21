@@ -22,8 +22,11 @@ class TweetSearcherTest extends TestCase
     public function testSearch(): void
     {
         $criteria = new TweetSearcher\Criteria(
-            new TweetSearcher\Criteria\Match\Keyword('ごちうさ'),
-            TweetSearcher\Criteria\Period::since(2020, 9, 20)
+            new TweetSearcher\Criteria\Match\LogicalAnd(
+                new TweetSearcher\Criteria\Match\Keyword('ごちうさ'),
+                new TweetSearcher\Criteria\Match\NotRetweet()
+            ),
+            TweetSearcher\Criteria\Period::since(2020, 9, 20),
         );
 
         $tweetCollection = $this->sut->search($criteria);

@@ -41,6 +41,9 @@ class QueryStringifier
         if ($match instanceof Match\Account) {
             return $this->stringifyAccount($match);
         }
+        if ($match instanceof Match\NotRetweet) {
+            return $this->stringifyNotRetweet($match);
+        }
 
         throw new InvalidArgumentException('unprocessable Match object: ' . get_class($match));
     }
@@ -97,5 +100,14 @@ class QueryStringifier
     private function stringifyAccount(Match\Account $account): string
     {
         return "from:{$account->getValue()}";
+    }
+
+    /**
+     * @param Match\NotRetweet $notRetweet
+     * @return string
+     */
+    private function stringifyNotRetweet(Match\NotRetweet $notRetweet): string
+    {
+        return '-is:retweet';
     }
 }

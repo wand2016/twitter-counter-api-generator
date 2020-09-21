@@ -98,5 +98,13 @@ class QueryStringifierTest extends TestCase
             ),
             'queryStringExpected' => 'from:d_horiyama_ota ごちうさ (チヤシコ OR chiyashico)',
         ];
+
+        yield 'not retweet' => [
+            'match' => new Match\LogicalAnd(
+                new Match\Keyword('ごちうさ'),
+                new Match\NotRetweet()
+            ),
+            'queryStringExpected' => 'ごちうさ -is:retweet',
+        ];
     }
 }
