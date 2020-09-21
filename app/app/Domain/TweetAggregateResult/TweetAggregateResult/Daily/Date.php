@@ -36,6 +36,14 @@ final class Date
     }
 
     /**
+     * @return int
+     */
+    public function getTimestamp(): int
+    {
+        return $this->carbon->getTimestamp();
+    }
+
+    /**
      * @return string
      */
     public function toIso8601String(): string

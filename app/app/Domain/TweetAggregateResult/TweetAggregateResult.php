@@ -4,7 +4,11 @@ declare(strict_types=1);
 
 namespace App\Domain\TweetAggregateResult;
 
+use App\Domain\Tweet\Tweet;
+use App\Domain\Tweet\TweetSearchResult;
 use App\Domain\TweetAggregateResult\TweetAggregateResult\Daily;
+use Carbon\CarbonImmutable;
+use Illuminate\Support\Collection;
 
 /**
  * Class TweetAggregateResult
@@ -13,26 +17,60 @@ use App\Domain\TweetAggregateResult\TweetAggregateResult\Daily;
 class TweetAggregateResult
 {
     /**
-     * @var iterable|Daily[]
+     * @var Daily[]
      */
-    private iterable $dailyCounts;
+    private array $dailyAggregateResultMap = [];
 
     /**
      * TweetAggregateResult constructor.
-     * @param Daily ...$dailyCounts
+     * @param Daily ...$dailyAggregateResults
      */
-    public function __construct(Daily ...$dailyCounts)
+    public function __construct(Daily ...$dailyAggregateResults)
     {
-        $this->dailyCounts = $dailyCounts;
+        foreach ($dailyAggregateResults as $dailyAggregateResult) {
+            $this->putDailyAggregateResult($dailyAggregateResult);
+        }
     }
 
     /**
-     * @return Daily[]|iterable
+     * @return iterable|Daily[]
      */
-    public function getDailyCounts(): iterable
+    public function getDailyAggregateResults(): iterable
     {
-        return $this->dailyCounts;
+        return collect($this->dailyAggregateResultMap)
+            ->values();
     }
 
-    // TODO: derivatives
+    /**
+     * @param TweetSearchResult $tweetSearchResult
+     */
+    public function applySearchResult(TweetSearchResult $tweetSearchResult): void
+    {
+        collect($tweetSearchResult->getTweets())
+            ->groupBy(
+                function (Tweet $tweet): int {
+                    return CarbonImmutable::instance($tweet->getTweetedAt())
+                        ->startOfDay()
+                        ->getTimestamp();
+                }
+            )
+            ->each(
+                function (Collection $group, int $timestamp): void {
+                    $this->putDailyAggregateResult(
+                        new Daily(
+                            new Daily\Date(CarbonImmutable::createFromTimestamp($timestamp)),
+                            $group->count()
+                        )
+                    );
+                }
+            );
+    }
+
+    /**
+     * @param Daily $dailyAggregateResult
+     */
+    public function putDailyAggregateResult(Daily $dailyAggregateResult): void
+    {
+        $this->dailyAggregateResultMap[$dailyAggregateResult->getDate()->getTimestamp()] = $dailyAggregateResult;
+    }
 }
