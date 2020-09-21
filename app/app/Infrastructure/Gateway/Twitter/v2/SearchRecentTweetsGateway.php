@@ -65,7 +65,6 @@ class SearchRecentTweetsGateway
     public function call(RequestDto $request): ResponseDto
     {
         $bearerToken = $this->bearerTokenPool->getBearerToken();
-
         try {
             $response = $this->client->get(
                 static::URI,

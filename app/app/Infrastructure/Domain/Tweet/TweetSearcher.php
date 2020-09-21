@@ -8,6 +8,11 @@ use App\Domain\Tweet\Tweet;
 use App\Domain\Tweet\TweetCollection;
 use App\Domain\Tweet\TweetSearcher as TweetSearcherInterface;
 use App\Domain\Tweet\TweetSearcher\Criteria;
+use App\Exceptions\Tweet\TweetSearchFailedException;
+use App\Exceptions\TwitterApi\AuthorizationFailedException;
+use App\Exceptions\TwitterApi\AuthorizationTokenParseFailedException;
+use App\Exceptions\TwitterApi\SearchRecentFailedException;
+use App\Exceptions\TwitterApi\SearchRecentResponseParseFailedException;
 use App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway;
 use App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway\Dto\Common\Token;
 use App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway\Dto\RequestDtoFactory;
@@ -44,9 +49,32 @@ class TweetSearcher implements TweetSearcherInterface
 
     /**
      * @inheritDoc
-     * TODO: error handling
      */
     public function search(Criteria $criteria): TweetCollection
+    {
+        try {
+            return $this->trySearch($criteria);
+        } catch (
+            // @formatter:off
+            AuthorizationFailedException |
+            AuthorizationTokenParseFailedException |
+            SearchRecentFailedException |
+            SearchRecentResponseParseFailedException $e
+            // @formatter:on
+        ) {
+            throw new TweetSearchFailedException($e);
+        }
+    }
+
+    /**
+     * @param Criteria $criteria
+     * @return TweetCollection
+     * @throws AuthorizationFailedException
+     * @throws AuthorizationTokenParseFailedException
+     * @throws SearchRecentFailedException
+     * @throws SearchRecentResponseParseFailedException
+     */
+    private function trySearch(Criteria $criteria): TweetCollection
     {
         $tweets = collect([]);
         /** @var Token|null $nextToken */
@@ -55,7 +83,11 @@ class TweetSearcher implements TweetSearcherInterface
         $trials = 0;
 
         do {
-            $requestDto = $this->requestDtoFactory->createFromCriteria($criteria, $nextToken);
+            $requestDto = $this->requestDtoFactory->createWithCriteria(
+                $criteria,
+                [new SearchRecentTweetsGateway\Dto\RequestDto\TweetField\CreatedAt()],
+                $nextToken
+            );
 
             $responseDto = $this->searchRecentTweetsGateway->call($requestDto);
             $nextToken = $responseDto->getMeta()->getNextToken();
@@ -63,9 +95,9 @@ class TweetSearcher implements TweetSearcherInterface
             $chunk = collect($responseDto->getData())
                 ->map(
                     function (SearchRecentTweetsGateway\Dto\ResponseDto\Datum $datum): Tweet {
-                        return Tweet::create(
-                            $datum->getCreatedAt()
-                        );
+                        $createdAt = $datum->getCreatedAt();
+                        assert($createdAt !== null, 'created_at is specified in request tweet.fields');
+                        return Tweet::create($createdAt);
                     }
                 );
 

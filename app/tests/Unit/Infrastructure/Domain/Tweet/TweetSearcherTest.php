@@ -23,7 +23,7 @@ class TweetSearcherTest extends TestCase
     {
         $criteria = new TweetSearcher\Criteria(
             new TweetSearcher\Criteria\Match\Keyword('ごちうさ'),
-            TweetSearcher\Criteria\Period::since(2020, 9, 21)
+            TweetSearcher\Criteria\Period::since(2020, 9, 20)
         );
 
         $tweetCollection = $this->sut->search($criteria);

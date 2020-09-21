@@ -7,6 +7,7 @@ namespace App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway\Dto;
 use App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway\Dto\Common\Token;
 use App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway\Dto\RequestDto\MaxResults;
 use App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway\Dto\RequestDto\TweetField;
+use Carbon\CarbonImmutable;
 use DateTimeInterface;
 
 /**
@@ -74,51 +75,61 @@ final class RequestDto
 
 
     /**
-     * TODO: impl
      * @return array
      */
     public function toQueryParameters(): array
     {
-        $ret = [
-            'query' => $this->query,
-        ];
-
-        $tweetFields = $this->buildTweetFields();
-        if ($tweetFields) {
-            $ret['tweet.fields'] = $tweetFields;
-        }
-
-        $maxResults = $this->buildMaxResults();
-        if ($maxResults) {
-            $ret['max_results'] = $maxResults;
-        }
-
-        $nextToken = $this->buildNextToken();
-        if ($nextToken) {
-            $ret['next_token'] = $nextToken;
-        }
-
-        return $ret;
+        return array_filter(
+            [
+                'query' => $this->query,
+                'start_time' => $this->startTimeOrNull(),
+                'end' => $this->endTimeOrNull(),
+                'tweet.fields' => $this->tweetFieldsOrNull(),
+                'max_results' => $this->maxResultsOrNull(),
+                'next_token' => $this->nextTokenOrNull(),
+            ],
+            function ($val): bool {
+                return $val !== null;
+            }
+        );
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    private function buildTweetFields(): string
+    private function startTimeOrNull(): ?string
     {
-        return collect($this->tweetFields)
+        return $this->startTime ? CarbonImmutable::instance($this->startTime)->toIso8601String() : null;
+    }
+
+    /**
+     * @return string|null
+     */
+    private function endTimeOrNull(): ?string
+    {
+        return $this->endTime ? CarbonImmutable::instance($this->endTime)->toIso8601String() : null;
+    }
+
+    /**
+     * @return string|null
+     */
+    private function tweetFieldsOrNull(): ?string
+    {
+        $ret = collect($this->tweetFields)
             ->map(
                 function (TweetField $tweetField): string {
                     return $tweetField->getValue();
                 }
             )
             ->join(',');
+
+        return $ret === '' ? null : $ret;
     }
 
     /**
      * @return int|null
      */
-    private function buildMaxResults(): ?int
+    private function maxResultsOrNull(): ?int
     {
         return $this->maxResults ? $this->maxResults->getValue() : null;
     }
@@ -126,7 +137,7 @@ final class RequestDto
     /**
      * @return string|null
      */
-    private function buildNextToken(): ?string
+    private function nextTokenOrNull(): ?string
     {
         return $this->nextToken ? $this->nextToken->getValue() : null;
     }
