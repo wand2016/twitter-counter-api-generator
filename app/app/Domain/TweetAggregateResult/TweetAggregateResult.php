@@ -50,7 +50,13 @@ final class TweetAggregateResult
     public function getDailyAggregateResults(): iterable
     {
         return collect($this->dailyAggregateResultMap)
-            ->values();
+            ->values()
+            ->sort(
+                function (Daily $left, Daily $right): int {
+                    return $left->getDate()->getTimestamp()
+                        - $right->getDate()->getTimestamp();
+                }
+            );
     }
 
     /**
