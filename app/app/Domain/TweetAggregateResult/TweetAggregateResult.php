@@ -56,7 +56,8 @@ final class TweetAggregateResult
                     return $left->getDate()->getTimestamp()
                         - $right->getDate()->getTimestamp();
                 }
-            );
+            )
+            ->values();
     }
 
     /**
