@@ -27,6 +27,7 @@ functions:
       LOG_CHANNEL: stderr
       CONSUMER_KEY: ${env:CONSUMER_KEY}
       CONSUMER_SECRET: ${env:CONSUMER_SECRET}
+      AWS_BUCKET: ${env:AWS_BUCKET}
 
 # Exclude files from deployment
 package:
