@@ -68,6 +68,7 @@ final class TweetAggregateResult
             ->groupBy(
                 function (Tweet $tweet): int {
                     return CarbonImmutable::instance($tweet->getTweetedAt())
+                        ->timezone(config()->get('app.timezone'))
                         ->startOfDay()
                         ->getTimestamp();
                 }
