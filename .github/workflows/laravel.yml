@@ -2,8 +2,6 @@ name: Laravel
 
 on:
   push:
-  schedule:
-    - cron: "0 */6 * * *"
 
 jobs:
   laravel-tests:
@@ -45,8 +43,10 @@ jobs:
         env:
           CONSUMER_KEY: ${{ secrets.CONSUMER_KEY }}
           CONSUMER_SECRET: ${{ secrets.CONSUMER_SECRET }}
-      - name: Execute command
-        run: php artisan aggregate:all
+      - name: deploy
+        run: |
+          sudo npm i -g serverless
+          serverless deploy -v
         working-directory: app
         env:
           CONSUMER_KEY: ${{ secrets.CONSUMER_KEY }}

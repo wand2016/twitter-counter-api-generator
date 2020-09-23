@@ -52,4 +52,8 @@ $app->singleton(
 |
 */
 
+if (env('APP_ENV') === 'faas') {
+    $app->useStoragePath('/tmp');
+}
+
 return $app;

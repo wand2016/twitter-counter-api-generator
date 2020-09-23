@@ -30,7 +30,8 @@ return [
 
     'compiled' => env(
         'VIEW_COMPILED_PATH',
-        realpath(storage_path('framework/views'))
+        env('APP_ENV') === 'faas'
+            ? realpath(storage_path(''))
+            : realpath(storage_path('framework/views')),
     ),
-
 ];
