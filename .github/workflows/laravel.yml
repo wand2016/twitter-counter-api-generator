@@ -45,7 +45,7 @@ jobs:
           CONSUMER_SECRET: ${{ secrets.CONSUMER_SECRET }}
       - name: deploy
         run: |
-          sudo npm i -g serverless
+          sudo npm i -g serverless serverless-plugin-aws-alerts
           serverless deploy -v
         working-directory: app
         env:

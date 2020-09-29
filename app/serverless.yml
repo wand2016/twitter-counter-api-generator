@@ -11,7 +11,28 @@ provider:
       Resource:
         - "*"
 
+custom:
+  alerts:
+    stages:
+      - dev
+      - production
+      - staging
+
+    dashboards: true
+
+    topics:
+      alarm:
+        ${self:service}-alerts-alarm
+      ok:
+        ${self:service}-alerts-ok
+    alarms:
+      - functionErrors
+    definitions:
+      functionErrors:
+        period: 3600
+
 plugins:
+  - serverless-plugin-aws-alerts
   - ./vendor/bref/bref
 
 functions:
