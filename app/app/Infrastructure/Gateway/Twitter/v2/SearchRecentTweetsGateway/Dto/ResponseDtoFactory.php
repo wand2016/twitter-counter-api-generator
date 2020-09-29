@@ -11,7 +11,6 @@ use App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway\Dto\Response
 use App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway\Dto\ResponseDto\Meta;
 use DateTimeImmutable;
 use Exception;
-use Psr\Http\Message\ResponseInterface;
 use stdClass;
 
 /**
@@ -21,17 +20,16 @@ use stdClass;
 class ResponseDtoFactory
 {
     /**
-     * @param ResponseInterface $psrResponse
+     * @param string $rawResponseBodyContents
      * @return ResponseDto
      * @throws SearchRecentResponseParseFailedException
      */
-    public function parsePsrResponseContents(ResponseInterface $psrResponse): ResponseDto
+    public function parseResponseBodyContents(string $rawResponseBodyContents): ResponseDto
     {
-        $raw = $psrResponse->getBody()->getContents();
         try {
-            $contents = json_decode($raw);
+            $contents = json_decode($rawResponseBodyContents);
 
-            $data = collect($contents->data)
+            $data = collect($contents->data ?? [])
                 ->map(
                     function (stdClass $tuple): Datum {
                         return new Datum(
@@ -41,15 +39,15 @@ class ResponseDtoFactory
                     }
                 );
             $meta = new Meta(
-                new Id($contents->meta->newest_id),
-                new Id($contents->meta->oldest_id),
+                new Id($contents->meta->newest_id ?? ''),
+                new Id($contents->meta->oldest_id ?? ''),
                 $contents->meta->result_count,
                 isset($contents->meta->next_token) ? (new Token($contents->meta->next_token)) : null
             );
 
             return new ResponseDto($data, $meta);
         } catch (Exception $e) {
-            throw new SearchRecentResponseParseFailedException($raw, 0, $e);
+            throw new SearchRecentResponseParseFailedException($rawResponseBodyContents, 0, $e);
         }
     }
 }

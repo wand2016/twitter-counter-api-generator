@@ -79,6 +79,6 @@ class SearchRecentTweetsGateway
             throw new SearchRecentFailedException($e);
         }
 
-        return $this->responseDtoFactory->parsePsrResponseContents($response);
+        return $this->responseDtoFactory->parseResponseBodyContents($response->getBody()->getContents());
     }
 }
