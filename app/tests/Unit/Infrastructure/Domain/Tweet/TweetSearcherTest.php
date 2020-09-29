@@ -4,6 +4,7 @@ namespace Tests\Unit\Infrastructure\Domain\Tweet;
 
 use App\Domain\Tweet\TweetSearcher;
 use App\Infrastructure\Domain\Tweet\TweetSearcher as TweetSearcherImpl;
+use Carbon\CarbonImmutable;
 use Tests\TestCase;
 
 class TweetSearcherTest extends TestCase
@@ -23,17 +24,21 @@ class TweetSearcherTest extends TestCase
     {
         $this->markTestSkipped('external API call');
 
+        $today = CarbonImmutable::today();
+
         $criteria = new TweetSearcher\Criteria(
             new TweetSearcher\Criteria\Match\LogicalAnd(
                 new TweetSearcher\Criteria\Match\Keyword('ごちうさ'),
                 new TweetSearcher\Criteria\Match\NotRetweet()
             ),
-            TweetSearcher\Criteria\Period::since(2020, 9, 20),
+            TweetSearcher\Criteria\Period::since(
+                $today->year,
+                $today->month,
+                $today->day - 1
+            ),
         );
 
         $tweetCollection = $this->sut->search($criteria);
-
-        var_dump($tweetCollection->count());
 
         $this->assertGreaterThan(
             100,
