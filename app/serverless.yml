@@ -1,4 +1,4 @@
-service: twitter-counter-api-aggregator
+service: twitter-count-aggregator
 
 provider:
   name: aws
