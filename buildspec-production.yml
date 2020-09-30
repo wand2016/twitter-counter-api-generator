@@ -20,7 +20,7 @@ phases:
       - php artisan key:generate
       # deploy
       - npm i -g serverless serverless-plugin-aws-alerts
-      - serverless deploy --stage=staging -v
+      - serverless deploy --stage=production -v
   post_build:
     commands:
       - echo 'done'
