@@ -22,9 +22,9 @@ custom:
 
     topics:
       alarm:
-        ${self:service}-alerts-alarm
+        ${self:service}-${opt:stage}-alerts-alarm
       ok:
-        ${self:service}-alerts-ok
+        ${self:service}-${opt:stage}-alerts-ok
     alarms:
       - functionErrors
     definitions:
@@ -49,6 +49,13 @@ functions:
       CONSUMER_KEY: ${env:CONSUMER_KEY}
       CONSUMER_SECRET: ${env:CONSUMER_SECRET}
       AWS_BUCKET: ${env:AWS_BUCKET}
+
+resources:
+  Resources:
+    Bucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${env:AWS_BUCKET}
 
 # Exclude files from deployment
 package:
