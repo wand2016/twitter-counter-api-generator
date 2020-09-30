@@ -1,0 +1,26 @@
+version: 0.2
+
+env:
+  parameter-store:
+    CONSUMER_KEY: "twitter-consumer-key"
+    CONSUMER_SECRET: "twitter-consumer-secret"
+  variables:
+    AWS_BUCKET: "twitter-counter-api"
+phases:
+  install:
+    runtime-versions:
+      nodejs: 12
+      php: 7.4
+  build:
+    commands:
+      - cd ./app/
+      # build
+      - cp .env.example .env
+      - composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+      - php artisan key:generate
+      # deploy
+      - npm i -g serverless serverless-plugin-aws-alerts
+      - serverless deploy --stage=staging -v
+  post_build:
+    commands:
+      - echo 'done'
