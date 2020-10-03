@@ -6,9 +6,10 @@ namespace App\Infrastructure\Domain\TweetSearchAggregateResultApi;
 
 use App\Domain\Tweet\TweetSearcher\Criteria;
 use App\Domain\TweetSearchAggregateResultApi\TweetSearchAggregateResultApi;
+use App\Domain\TweetSearchAggregateResultApi\TweetSearchAggregateResultApi\EndpointName;
 use App\Domain\TweetSearchAggregateResultApi\TweetSearchAggregateResultApi\Id;
 use App\Domain\TweetSearchAggregateResultApi\TweetSearchAggregateResultApiRepository as RepositoryInterface;
-use BadMethodCallException;
+use App\Exceptions\TweetAggregateResultApi\TweetAggregateResultApiNotFoundException;
 
 /**
  * Class TweetSearchAggregateResultApiRepository
@@ -41,10 +42,20 @@ class TweetSearchAggregateResultApiRepository implements RepositoryInterface
     /**
      * @inheritDoc
      */
-    public function findById(Id $id): TweetSearchAggregateResultApi
+    public function findByEndpointName(EndpointName $endpointName): TweetSearchAggregateResultApi
     {
-        // TODO: Implement findById() method.
-        throw new BadMethodCallException('not implemented yet');
+        $ret = collect($this->apis)
+            ->first(
+                function (TweetSearchAggregateResultApi $api) use ($endpointName) {
+                    return $api->getEndpointName()->equals($endpointName);
+                }
+            );
+
+        if (!$ret) {
+            throw new TweetAggregateResultApiNotFoundException($endpointName);
+        }
+
+        return $ret;
     }
 
     /**
