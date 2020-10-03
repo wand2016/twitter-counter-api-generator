@@ -6,9 +6,10 @@ namespace App\Infrastructure\Domain\TweetSearchAggregateResultApi;
 
 use App\Domain\Tweet\TweetSearcher\Criteria;
 use App\Domain\TweetSearchAggregateResultApi\TweetSearchAggregateResultApi;
+use App\Domain\TweetSearchAggregateResultApi\TweetSearchAggregateResultApi\EndpointName;
 use App\Domain\TweetSearchAggregateResultApi\TweetSearchAggregateResultApi\Id;
 use App\Domain\TweetSearchAggregateResultApi\TweetSearchAggregateResultApiRepository as RepositoryInterface;
-use BadMethodCallException;
+use App\Exceptions\TweetAggregateResultApi\TweetAggregateResultApiNotFoundException;
 
 /**
  * Class TweetSearchAggregateResultApiRepository
@@ -33,6 +34,8 @@ class TweetSearchAggregateResultApiRepository implements RepositoryInterface
         $this->putChiyashico();
         $this->putChinoshico();
         $this->putSyamishico();
+        $this->putPinoshico();
+        $this->putPoposhico();
         $this->putShicoDiary();
         $this->putAhigochi();
     }
@@ -41,10 +44,20 @@ class TweetSearchAggregateResultApiRepository implements RepositoryInterface
     /**
      * @inheritDoc
      */
-    public function findById(Id $id): TweetSearchAggregateResultApi
+    public function findByEndpointName(EndpointName $endpointName): TweetSearchAggregateResultApi
     {
-        // TODO: Implement findById() method.
-        throw new BadMethodCallException('not implemented yet');
+        $ret = collect($this->apis)
+            ->first(
+                function (TweetSearchAggregateResultApi $api) use ($endpointName) {
+                    return $api->getEndpointName()->equals($endpointName);
+                }
+            );
+
+        if (!$ret) {
+            throw new TweetAggregateResultApiNotFoundException($endpointName);
+        }
+
+        return $ret;
     }
 
     /**
@@ -193,6 +206,58 @@ class TweetSearchAggregateResultApiRepository implements RepositoryInterface
                         new Criteria\Match\Keyword('#シャミシコ'),
                         new Criteria\Match\Keyword('#ｼｬﾐｼｺ'),
                         new Criteria\Match\Keyword('#syamishico'),
+                    ),
+                    new Criteria\Match\NotRetweet()
+                ),
+                Criteria\Period::unbound()
+            )
+        );
+    }
+
+    protected function putPinoshico(): void
+    {
+        $id = new Id('77777777-7777-7777-7777-777777777777');
+        $this->apis[$id->getValue()] = new TweetSearchAggregateResultApi(
+            $id,
+            new TweetSearchAggregateResultApi\EndpointName('pinoshico'),
+            new Criteria(
+                new Criteria\Match\LogicalAnd(
+                    new Criteria\Match\LogicalOr(
+                        new Criteria\Match\Keyword('ぴのシコ'),
+                        new Criteria\Match\Keyword('ぴのｼｺ'),
+                        new Criteria\Match\Keyword('pinoshico'),
+                        new Criteria\Match\Keyword('#ぴのシコ'),
+                        new Criteria\Match\Keyword('#ぴのｼｺ'),
+                        new Criteria\Match\Keyword('#pinoshico'),
+                    ),
+                    new Criteria\Match\NotRetweet()
+                ),
+                Criteria\Period::unbound()
+            )
+        );
+    }
+
+    protected function putPoposhico(): void
+    {
+        $id = new Id('88888888-8888-8888-8888-888888888888');
+        $this->apis[$id->getValue()] = new TweetSearchAggregateResultApi(
+            $id,
+            new TweetSearchAggregateResultApi\EndpointName('poposhico'),
+            new Criteria(
+                new Criteria\Match\LogicalAnd(
+                    new Criteria\Match\LogicalOr(
+                        new Criteria\Match\Keyword('ぽぽろんシコ'),
+                        new Criteria\Match\Keyword('ぽぽろんｼｺ'),
+                        new Criteria\Match\Keyword('ぽぽシコ'),
+                        new Criteria\Match\Keyword('ぽぽｼｺ'),
+                        new Criteria\Match\Keyword('poporonshico'),
+                        new Criteria\Match\Keyword('poposhico'),
+                        new Criteria\Match\Keyword('#ぽぽろんシコ'),
+                        new Criteria\Match\Keyword('#ぽぽろんｼｺ'),
+                        new Criteria\Match\Keyword('#ぽぽシコ'),
+                        new Criteria\Match\Keyword('#ぽぽｼｺ'),
+                        new Criteria\Match\Keyword('#poporonshico'),
+                        new Criteria\Match\Keyword('#poposhico'),
                     ),
                     new Criteria\Match\NotRetweet()
                 ),

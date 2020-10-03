@@ -111,7 +111,7 @@ class TweetAggregateResultTest extends TestCase
     ): Tweet {
         $datetime = CarbonImmutable::create($year, $month, $day, $hour, $minute, $second);
         assert($datetime !== false);
-        return Tweet::create($datetime);
+        return Tweet::create('stub', $datetime);
     }
 
     /**

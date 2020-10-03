@@ -13,26 +13,48 @@ use DatetimeInterface;
 final class Tweet
 {
     /**
+     * @var string
+     */
+    private string $text;
+
+    /**
      * @var DatetimeInterface
      */
     private DatetimeInterface $tweetedAt;
 
     /**
      * Tweet constructor.
+     * @param string $text
      * @param DatetimeInterface $tweetedAt
      */
-    private function __construct(DatetimeInterface $tweetedAt)
+    public function __construct(string $text, DatetimeInterface $tweetedAt)
     {
+        $this->text = $text;
         $this->tweetedAt = $tweetedAt;
     }
 
+
     /**
+     * @param string $text
      * @param DatetimeInterface $tweetedAt
      * @return static
      */
-    public static function create(DatetimeInterface $tweetedAt): self
+    public static function create(
+        string $text,
+        DatetimeInterface $tweetedAt
+    ): self {
+        return new static(
+            $text,
+            $tweetedAt
+        );
+    }
+
+    /**
+     * @return string
+     */
+    public function getText(): string
     {
-        return new static($tweetedAt);
+        return $this->text;
     }
 
     /**

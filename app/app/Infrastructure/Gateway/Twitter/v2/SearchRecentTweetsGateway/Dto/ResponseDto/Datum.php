@@ -20,6 +20,11 @@ final class Datum
     private Id $id;
 
     /**
+     * @var string
+     */
+    private string $text;
+
+    /**
      * @var DateTimeInterface|null
      */
     private ?DateTimeInterface $createdAt;
@@ -27,13 +32,16 @@ final class Datum
     /**
      * Datum constructor.
      * @param Id $id
+     * @param string $text
      * @param DateTimeInterface|null $createdAt
      */
-    public function __construct(Id $id, ?DateTimeInterface $createdAt)
+    public function __construct(Id $id, string $text, ?DateTimeInterface $createdAt)
     {
         $this->id = $id;
+        $this->text = $text;
         $this->createdAt = $createdAt;
     }
+
 
     /**
      * @return Id
@@ -41,6 +49,14 @@ final class Datum
     public function getId(): Id
     {
         return $this->id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getText(): string
+    {
+        return $this->text;
     }
 
     /**

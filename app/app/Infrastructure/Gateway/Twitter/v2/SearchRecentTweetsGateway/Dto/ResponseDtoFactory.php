@@ -34,6 +34,7 @@ class ResponseDtoFactory
                     function (stdClass $tuple): Datum {
                         return new Datum(
                             new Id($tuple->id),
+                            $tuple->text,
                             isset($tuple->created_at) ? new DateTimeImmutable($tuple->created_at) : null
                         );
                     }

@@ -40,4 +40,13 @@ final class EndpointName
     {
         return $this->value . '.json';
     }
+
+    /**
+     * @param EndpointName $target
+     * @return bool
+     */
+    public function equals(self $target): bool
+    {
+        return $this->value === $target->value;
+    }
 }
