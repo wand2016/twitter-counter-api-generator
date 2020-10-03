@@ -95,7 +95,10 @@ class TweetSearcher implements TweetSearcherInterface
                     function (SearchRecentTweetsGateway\Dto\ResponseDto\Datum $datum): Tweet {
                         $createdAt = $datum->getCreatedAt();
                         assert($createdAt !== null, 'created_at is specified in request tweet.fields');
-                        return Tweet::create($createdAt);
+                        return Tweet::create(
+                            $datum->getText(),
+                            $createdAt
+                        );
                     }
                 );
 
