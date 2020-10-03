@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Domain\TweetSearchAggregateResultApi;
 
 use App\Domain\TweetSearchAggregateResultApi\TweetSearchAggregateResultApi\EndpointName;
-use App\Domain\TweetSearchAggregateResultApi\TweetSearchAggregateResultApi\Id;
 use App\Domain\TweetSearchCriteria\TweetSearchCriteria;
 use Carbon\CarbonImmutable;
 
@@ -15,11 +14,6 @@ use Carbon\CarbonImmutable;
  */
 class TweetSearchAggregateResultApi
 {
-    /**
-     * @var Id
-     */
-    private Id $id;
-
     /**
      * @var EndpointName
      */
@@ -32,25 +26,15 @@ class TweetSearchAggregateResultApi
 
     /**
      * TweetSearchAggregateResultApi constructor.
-     * @param Id $id
      * @param EndpointName $endpointName
      * @param TweetSearchCriteria $searchCriteria
      */
-    public function __construct(Id $id, EndpointName $endpointName, TweetSearchCriteria $searchCriteria)
+    public function __construct(EndpointName $endpointName, TweetSearchCriteria $searchCriteria)
     {
-        $this->id = $id;
         $this->endpointName = $endpointName;
         $this->searchCriteria = $searchCriteria;
     }
 
-
-    /**
-     * @return Id
-     */
-    public function getId(): Id
-    {
-        return $this->id;
-    }
 
     /**
      * @return EndpointName
