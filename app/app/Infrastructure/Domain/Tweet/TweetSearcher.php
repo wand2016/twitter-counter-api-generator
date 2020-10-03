@@ -6,8 +6,8 @@ namespace App\Infrastructure\Domain\Tweet;
 
 use App\Domain\Tweet\Tweet;
 use App\Domain\Tweet\TweetSearcher as TweetSearcherInterface;
-use App\Domain\Tweet\TweetSearcher\Criteria;
 use App\Domain\Tweet\TweetSearchResult;
+use App\Domain\TweetSearchCriteria\TweetSearchCriteria;
 use App\Exceptions\Tweet\TweetSearchFailedException;
 use App\Exceptions\TwitterApi\AuthorizationFailedException;
 use App\Exceptions\TwitterApi\AuthorizationTokenParseFailedException;
@@ -50,7 +50,7 @@ class TweetSearcher implements TweetSearcherInterface
     /**
      * @inheritDoc
      */
-    public function search(Criteria $criteria): TweetSearchResult
+    public function search(TweetSearchCriteria $criteria): TweetSearchResult
     {
         try {
             return $this->trySearch($criteria);
@@ -67,14 +67,14 @@ class TweetSearcher implements TweetSearcherInterface
     }
 
     /**
-     * @param Criteria $criteria
+     * @param TweetSearchCriteria $criteria
      * @return TweetSearchResult
      * @throws AuthorizationFailedException
      * @throws AuthorizationTokenParseFailedException
      * @throws SearchRecentFailedException
      * @throws SearchRecentResponseParseFailedException
      */
-    private function trySearch(Criteria $criteria): TweetSearchResult
+    private function trySearch(TweetSearchCriteria $criteria): TweetSearchResult
     {
         $tweets = collect([]);
         /** @var Token|null $nextToken */

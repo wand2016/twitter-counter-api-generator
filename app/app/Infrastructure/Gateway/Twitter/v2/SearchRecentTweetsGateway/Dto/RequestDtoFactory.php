@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway\Dto;
 
-use App\Domain\Tweet\TweetSearcher\Criteria;
+use App\Domain\TweetSearchCriteria\TweetSearchCriteria;
 use App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway\Dto\Common\Token;
 use App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway\Dto\RequestDto\MaxResults;
 use App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway\Dto\RequestDto\TweetField;
@@ -31,13 +31,13 @@ class RequestDtoFactory
     }
 
     /**
-     * @param Criteria $criteria
+     * @param TweetSearchCriteria $criteria
      * @param iterable|TweetField[] $tweetFields
      * @param Token|null $nextToken
      * @return RequestDto
      */
     public function createWithCriteria(
-        Criteria $criteria,
+        TweetSearchCriteria $criteria,
         iterable $tweetFields,
         ?Token $nextToken
     ): RequestDto {

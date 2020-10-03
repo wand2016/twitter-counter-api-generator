@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Tweet\TweetSearcher;
+namespace App\Domain\TweetSearchCriteria;
 
-use App\Domain\Tweet\TweetSearcher\Criteria\Match;
-use App\Domain\Tweet\TweetSearcher\Criteria\Period;
+use App\Domain\TweetSearchCriteria\TweetSearchCriteria\Match;
+use App\Domain\TweetSearchCriteria\TweetSearchCriteria\Period;
 
 /**
- * Class Criteria
+ * Class TweetSearchCriteria
  * @package App\Domain\Tweet\TweetSearcher
  */
-class Criteria
+class TweetSearchCriteria
 {
     /**
      * @var Match
@@ -24,7 +24,7 @@ class Criteria
     private Period $period;
 
     /**
-     * Criteria constructor.
+     * TweetSearchCriteria constructor.
      * @param Match $match
      * @param Period $period
      */

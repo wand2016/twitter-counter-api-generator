@@ -7,6 +7,7 @@ namespace App\UseCases;
 use App\Domain\Tweet\TweetSearcher;
 use App\Domain\TweetSearchAggregateResultApi\TweetSearchAggregateResultApi\EndpointName;
 use App\Domain\TweetSearchAggregateResultApi\TweetSearchAggregateResultApiRepository;
+use App\Domain\TweetSearchCriteria\TweetSearchCriteriaMatchStringifier;
 use App\Exceptions\Tweet\TweetSearchFailedException;
 use App\Exceptions\TweetAggregateResultApi\TweetAggregateResultApiNotFoundException;
 use Carbon\CarbonImmutable;
@@ -19,6 +20,11 @@ class SearchTweets
     private TweetSearchAggregateResultApiRepository $apiRepository;
 
     /**
+     * @var TweetSearchCriteriaMatchStringifier
+     */
+    private TweetSearchCriteriaMatchStringifier $tweetSearchCriteriaMatchStringifier;
+
+    /**
      * @var TweetSearcher
      */
     private TweetSearcher $tweetSearcher;
@@ -26,11 +32,16 @@ class SearchTweets
     /**
      * SearchTweets constructor.
      * @param TweetSearchAggregateResultApiRepository $apiRepository
+     * @param TweetSearchCriteriaMatchStringifier $tweetSearchCriteriaMatchStringifier
      * @param TweetSearcher $tweetSearcher
      */
-    public function __construct(TweetSearchAggregateResultApiRepository $apiRepository, TweetSearcher $tweetSearcher)
-    {
+    public function __construct(
+        TweetSearchAggregateResultApiRepository $apiRepository,
+        TweetSearchCriteriaMatchStringifier $tweetSearchCriteriaMatchStringifier,
+        TweetSearcher $tweetSearcher
+    ) {
         $this->apiRepository = $apiRepository;
+        $this->tweetSearchCriteriaMatchStringifier = $tweetSearchCriteriaMatchStringifier;
         $this->tweetSearcher = $tweetSearcher;
     }
 
@@ -44,12 +55,19 @@ class SearchTweets
         $api = $this->apiRepository->findByEndpointName($endpointName);
         $criteria = $api->getSearchCriteria();
 
-        // todo: stringify
-        var_dump($criteria);
+        echo '==========' . PHP_EOL;
+        echo 'query:' . PHP_EOL;
+        echo $this->tweetSearchCriteriaMatchStringifier->stringify($criteria->getMatch());
+        echo PHP_EOL;
+        echo '==========' . PHP_EOL;
 
         $tweetSearchResult = $this->tweetSearcher->search($criteria);
 
+        echo 'count:';
         echo $tweetSearchResult->count();
+        echo PHP_EOL;
+        echo '==========' . PHP_EOL;
+
         $tweets = $tweetSearchResult->getTweets();
         foreach ($tweets as $tweet) {
             echo '----------' . PHP_EOL;

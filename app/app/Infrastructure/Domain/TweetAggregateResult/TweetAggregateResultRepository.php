@@ -7,9 +7,11 @@ namespace App\Infrastructure\Domain\TweetAggregateResult;
 use App\Domain\TweetAggregateResult\TweetAggregateResult;
 use App\Domain\TweetAggregateResult\TweetAggregateResultRepository as TweetAggregateResultRepositoryInterface;
 use App\Domain\TweetSearchAggregateResultApi\TweetSearchAggregateResultApi\EndpointName;
+use App\Domain\TweetSearchCriteria\TweetSearchCriteria\Match;
 use App\Exceptions\TweetAggregateResult\TweetAggregateResultNotFoundException;
 use App\Exceptions\TweetAggregateResult\TweetAggregateResultParseFailedException;
 use App\Exceptions\TweetAggregateResult\TweetAggregateResultPersistFailedException;
+use App\Infrastructure\Domain\TweetSearchCriteria\TweetSearchCriteriaMatchStringifier;
 use Carbon\CarbonImmutable;
 use Exception;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
@@ -23,6 +25,21 @@ use stdClass;
  */
 class TweetAggregateResultRepository implements TweetAggregateResultRepositoryInterface
 {
+    /**
+     * @var TweetSearchCriteriaMatchStringifier
+     */
+    private TweetSearchCriteriaMatchStringifier $tweetSearchCriteriaMatchStringifier;
+
+    /**
+     * TweetAggregateResultRepository constructor.
+     * @param TweetSearchCriteriaMatchStringifier $tweetSearchCriteriaMatchStringifier
+     */
+    public function __construct(TweetSearchCriteriaMatchStringifier $tweetSearchCriteriaMatchStringifier)
+    {
+        $this->tweetSearchCriteriaMatchStringifier = $tweetSearchCriteriaMatchStringifier;
+    }
+
+
     /**
      * @inheritDoc
      */
@@ -40,14 +57,19 @@ class TweetAggregateResultRepository implements TweetAggregateResultRepositoryIn
             throw new TweetAggregateResultParseFailedException($s3Object, 0, $e);
         }
 
-        return TweetAggregateResult::create($endpointName, $dailyAggregateResults);
+        return TweetAggregateResult::create(
+            $endpointName,
+            $dailyAggregateResults
+        );
     }
 
     /**
      * @inheritDoc
      */
-    public function persist(TweetAggregateResult $tweetAggregateResult): void
-    {
+    public function persist(
+        TweetAggregateResult $tweetAggregateResult,
+        Match $match
+    ): void {
         $dailyAggregateResults = $tweetAggregateResult->getDailyAggregateResults();
 
         $data = collect($dailyAggregateResults)
@@ -60,7 +82,14 @@ class TweetAggregateResultRepository implements TweetAggregateResultRepositoryIn
                 }
             )
             ->toArray();
-        $content = json_encode($data);
+
+        $object = (object)[
+            'data' => $data,
+            '_embedded' => [
+                'query' => $this->tweetSearchCriteriaMatchStringifier->stringify($match),
+            ],
+        ];
+        $content = json_encode($object);
         assert($content !== false);
 
         try {
@@ -99,7 +128,9 @@ class TweetAggregateResultRepository implements TweetAggregateResultRepositoryIn
      */
     private function tryHydrate(string $s3Object): Collection
     {
-        return collect(json_decode($s3Object))
+        $object = json_decode($s3Object);
+
+        return collect($object->data ?? $object)
             ->map(
                 function (stdClass $tuple): TweetAggregateResult\Daily {
                     return new TweetAggregateResult\Daily(
