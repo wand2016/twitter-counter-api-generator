@@ -1,0 +1,41 @@
+openapi: "3.0.0"
+info:
+  title: shico
+  version: 1.0.0
+paths:
+  /*.json:
+    get:
+      responses:
+        '200':
+          description: |-
+            200 response
+          content:
+            application/json:
+              schema:
+                type: "object"
+                required:
+                  - "data"
+                  - "_embedded"
+                properties:
+                  data:
+                    type: "array"
+                    items:
+                      type: "object"
+                      required:
+                        - "date"
+                        - "count"
+                      properties:
+                        date:
+                          type: "string"
+                          example: "2020-10-10"
+                        count:
+                          type: "integer"
+                          example: 4545
+                  _embedded:
+                    type: "object"
+                    required:
+                      - "query"
+                    properties:
+                      query:
+                        type: "string"
+                        example: "シャロシコ OR syaroshico"
