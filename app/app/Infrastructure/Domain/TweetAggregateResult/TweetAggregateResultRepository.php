@@ -130,7 +130,7 @@ class TweetAggregateResultRepository implements TweetAggregateResultRepositoryIn
     {
         $object = json_decode($s3Object);
 
-        return collect($object->data ?? $object)
+        return collect($object->data)
             ->map(
                 function (stdClass $tuple): TweetAggregateResult\Daily {
                     return new TweetAggregateResult\Daily(

@@ -75,29 +75,6 @@ class TweetAggregateResultRepositoryTest extends TestCase
         );
     }
 
-    public function testFindByIdLegacy(): void
-    {
-        $this->setupSyaroshicoFileLegacy();
-
-        $tweetAggregateResult = $this->sut->findByEndpointName(new EndpointName('syaroshico'));
-
-        $dailyAggregateResults = [...$tweetAggregateResult->getDailyAggregateResults()];
-        $this->assertCount(
-            2,
-            $dailyAggregateResults
-        );
-        $this->assertDailyAggregateResult(
-            Date::create(2020, 10, 1),
-            10,
-            $dailyAggregateResults[0]
-        );
-        $this->assertDailyAggregateResult(
-            Date::create(2020, 10, 2),
-            5,
-            $dailyAggregateResults[1]
-        );
-    }
-
     public function testFindByIdNotFound(): void
     {
         $this->setupSyaroshicoFile();
@@ -165,34 +142,6 @@ class TweetAggregateResultRepositoryTest extends TestCase
         );
     }
 
-    public function testPersistOverwriteLegacy(): void
-    {
-        $this->setupSyaroshicoFileLegacy();
-
-        $tweetAggregateResult = TweetAggregateResult::create(
-            new EndpointName('syaroshico'),
-            [
-                new Daily(
-                    Date::create(2020, 7, 15),
-                    4545
-                ),
-            ]
-        );
-
-        $this->sut->persist(
-            $tweetAggregateResult,
-            new Keyword('syaroshico')
-        );
-
-        $this->assertTrue(
-            Storage::cloud()->exists(self::FIXTURE_FILENAME)
-        );
-        $this->assertSame(
-            '{"data":[{"date":"2020-07-15","count":4545}],"_embedded":{"query":"syaroshico"}}',
-            Storage::cloud()->get(self::FIXTURE_FILENAME)
-        );
-    }
-
     /**
      * @param Date $dateExpected
      * @param int $countExpected
@@ -232,23 +181,6 @@ class TweetAggregateResultRepositoryTest extends TestCase
             ],
         ];
         $content = json_encode($object);
-        assert($content !== false);
-        Storage::cloud()->put(self::FIXTURE_FILENAME, $content);
-    }
-
-    private function setupSyaroshicoFileLegacy(): void
-    {
-        $data = [
-            [
-                'date' => '2020-10-01',
-                'count' => 10,
-            ],
-            [
-                'date' => '2020-10-02',
-                'count' => 5,
-            ],
-        ];
-        $content = json_encode($data);
         assert($content !== false);
         Storage::cloud()->put(self::FIXTURE_FILENAME, $content);
     }
