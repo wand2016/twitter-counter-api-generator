@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Tweet\TweetSearcher\Criteria;
+namespace App\Domain\TweetSearchCriteria\TweetSearchCriteria;
 
 use Carbon\CarbonImmutable;
 use DateTimeInterface;
@@ -10,7 +10,7 @@ use InvalidArgumentException;
 
 /**
  * Class Period
- * @package App\Domain\Tweet\TweetSearcher\Criteria
+ * @package App\Domain\TweetSearchCriteria\TweetSearchCriteria
  */
 final class Period
 {

@@ -1,8 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Unit\Infrastructure\Domain\Tweet;
 
-use App\Domain\Tweet\TweetSearcher;
+use App\Domain\TweetSearchCriteria\TweetSearchCriteria;
+use App\Domain\TweetSearchCriteria\TweetSearchCriteria\Match\Keyword;
+use App\Domain\TweetSearchCriteria\TweetSearchCriteria\Match\LogicalAnd;
+use App\Domain\TweetSearchCriteria\TweetSearchCriteria\Match\NotRetweet;
+use App\Domain\TweetSearchCriteria\TweetSearchCriteria\Period;
 use App\Infrastructure\Domain\Tweet\TweetSearcher as TweetSearcherImpl;
 use Carbon\CarbonImmutable;
 use Tests\TestCase;
@@ -26,12 +32,12 @@ class TweetSearcherTest extends TestCase
 
         $today = CarbonImmutable::today();
 
-        $criteria = new TweetSearcher\Criteria(
-            new TweetSearcher\Criteria\Match\LogicalAnd(
-                new TweetSearcher\Criteria\Match\Keyword('ごちうさ'),
-                new TweetSearcher\Criteria\Match\NotRetweet()
+        $criteria = new TweetSearchCriteria(
+            new LogicalAnd(
+                new Keyword('ごちうさ'),
+                new NotRetweet()
             ),
-            TweetSearcher\Criteria\Period::since(
+            Period::since(
                 $today->year,
                 $today->month,
                 $today->day - 1

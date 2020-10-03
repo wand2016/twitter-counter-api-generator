@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
-use App\Domain\Tweet\TweetSearcher;
+use App\Domain\Tweet\TweetSearcher as TweetSearcherInterface;
 use App\Domain\TweetAggregateResult\TweetAggregateResultRepository as TweetAggregateResultRepositoryInterface;
 use App\Domain\TweetSearchAggregateResultApi\TweetSearchAggregateResultApiRepository as ApiRepositoryInterface;
-use App\Infrastructure\Domain\Tweet\TweetSearcher as TweetSearcherInterface;
+use App\Infrastructure\Domain\Tweet\TweetSearcher;
 use App\Infrastructure\Domain\TweetAggregateResult\TweetAggregateResultRepository;
 use App\Infrastructure\Domain\TweetSearchAggregateResultApi\TweetSearchAggregateResultApiRepository;
 use App\Infrastructure\Gateway\Twitter\OAuth2TokenGateway;
@@ -51,8 +51,8 @@ class AppServiceProvider extends ServiceProvider implements DeferrableProvider
         );
 
         $this->app->singleton(
-            TweetSearcher::class,
-            TweetSearcherInterface::class
+            TweetSearcherInterface::class,
+            TweetSearcher::class
         );
     }
 

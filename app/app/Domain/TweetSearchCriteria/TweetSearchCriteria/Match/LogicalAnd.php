@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Tweet\TweetSearcher\Criteria\Match;
+namespace App\Domain\TweetSearchCriteria\TweetSearchCriteria\Match;
 
-use App\Domain\Tweet\TweetSearcher\Criteria\Match;
+use App\Domain\TweetSearchCriteria\TweetSearchCriteria\Match;
 
 /**
  * Class LogicalAnd
- * @package App\Domain\Tweet\TweetSearcher\Criteria\Match
+ * @package App\Domain\TweetSearchCriteria\TweetSearchCriteria\Match
  */
 class LogicalAnd implements Match
 {

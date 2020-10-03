@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Domain\TweetSearchAggregateResultApi;
 
-use App\Domain\Tweet\TweetSearcher\Criteria;
 use App\Domain\TweetSearchAggregateResultApi\TweetSearchAggregateResultApi;
 use App\Domain\TweetSearchAggregateResultApi\TweetSearchAggregateResultApi\EndpointName;
 use App\Domain\TweetSearchAggregateResultApi\TweetSearchAggregateResultApi\Id;
 use App\Domain\TweetSearchAggregateResultApi\TweetSearchAggregateResultApiRepository as RepositoryInterface;
+use App\Domain\TweetSearchCriteria\TweetSearchCriteria;
 use App\Exceptions\TweetAggregateResultApi\TweetAggregateResultApiNotFoundException;
 
 /**
@@ -74,19 +74,19 @@ class TweetSearchAggregateResultApiRepository implements RepositoryInterface
         $this->apis[$id->getValue()] = new TweetSearchAggregateResultApi(
             $id,
             new TweetSearchAggregateResultApi\EndpointName('syaroshico'),
-            new Criteria(
-                new Criteria\Match\LogicalAnd(
-                    new Criteria\Match\LogicalOr(
-                        new Criteria\Match\Keyword('シャロシコ'),
-                        new Criteria\Match\Keyword('ｼｬﾛｼｺ'),
-                        new Criteria\Match\Keyword('syaroshico'),
-                        new Criteria\Match\Keyword('#シャロシコ'),
-                        new Criteria\Match\Keyword('#ｼｬﾛｼｺ'),
-                        new Criteria\Match\Keyword('#syaroshico')
+            new TweetSearchCriteria(
+                new TweetSearchCriteria\Match\LogicalAnd(
+                    new TweetSearchCriteria\Match\LogicalOr(
+                        new TweetSearchCriteria\Match\Keyword('シャロシコ'),
+                        new TweetSearchCriteria\Match\Keyword('ｼｬﾛｼｺ'),
+                        new TweetSearchCriteria\Match\Keyword('syaroshico'),
+                        new TweetSearchCriteria\Match\Keyword('#シャロシコ'),
+                        new TweetSearchCriteria\Match\Keyword('#ｼｬﾛｼｺ'),
+                        new TweetSearchCriteria\Match\Keyword('#syaroshico')
                     ),
-                    new Criteria\Match\NotRetweet()
+                    new TweetSearchCriteria\Match\NotRetweet()
                 ),
-                Criteria\Period::unbound()
+                TweetSearchCriteria\Period::unbound()
             )
         );
     }
@@ -97,23 +97,23 @@ class TweetSearchAggregateResultApiRepository implements RepositoryInterface
         $this->apis[$id->getValue()] = new TweetSearchAggregateResultApi(
             $id,
             new TweetSearchAggregateResultApi\EndpointName('cocoshico'),
-            new Criteria(
-                new Criteria\Match\LogicalAnd(
-                    new Criteria\Match\LogicalOr(
-                        new Criteria\Match\Keyword('ココシコ'),
-                        new Criteria\Match\Keyword('ｺｺｼｺ'),
-                        new Criteria\Match\Keyword('シココア'),
-                        new Criteria\Match\Keyword('ｼｺｺｱ'),
-                        new Criteria\Match\Keyword('shicocoa'),
-                        new Criteria\Match\Keyword('#ココシコ'),
-                        new Criteria\Match\Keyword('#ｺｺｼｺ'),
-                        new Criteria\Match\Keyword('#シココア'),
-                        new Criteria\Match\Keyword('#ｼｺｺｱ'),
-                        new Criteria\Match\Keyword('#shicocoa'),
+            new TweetSearchCriteria(
+                new TweetSearchCriteria\Match\LogicalAnd(
+                    new TweetSearchCriteria\Match\LogicalOr(
+                        new TweetSearchCriteria\Match\Keyword('ココシコ'),
+                        new TweetSearchCriteria\Match\Keyword('ｺｺｼｺ'),
+                        new TweetSearchCriteria\Match\Keyword('シココア'),
+                        new TweetSearchCriteria\Match\Keyword('ｼｺｺｱ'),
+                        new TweetSearchCriteria\Match\Keyword('shicocoa'),
+                        new TweetSearchCriteria\Match\Keyword('#ココシコ'),
+                        new TweetSearchCriteria\Match\Keyword('#ｺｺｼｺ'),
+                        new TweetSearchCriteria\Match\Keyword('#シココア'),
+                        new TweetSearchCriteria\Match\Keyword('#ｼｺｺｱ'),
+                        new TweetSearchCriteria\Match\Keyword('#shicocoa'),
                     ),
-                    new Criteria\Match\NotRetweet()
+                    new TweetSearchCriteria\Match\NotRetweet()
                 ),
-                Criteria\Period::unbound()
+                TweetSearchCriteria\Period::unbound()
             )
         );
     }
@@ -124,19 +124,19 @@ class TweetSearchAggregateResultApiRepository implements RepositoryInterface
         $this->apis[$id->getValue()] = new TweetSearchAggregateResultApi(
             $id,
             new TweetSearchAggregateResultApi\EndpointName('rizeshico'),
-            new Criteria(
-                new Criteria\Match\LogicalAnd(
-                    new Criteria\Match\LogicalOr(
-                        new Criteria\Match\Keyword('リゼシコ'),
-                        new Criteria\Match\Keyword('ﾘｾﾞｼｺ'),
-                        new Criteria\Match\Keyword('rizeshico'),
-                        new Criteria\Match\Keyword('#リゼシコ'),
-                        new Criteria\Match\Keyword('#ﾘｾﾞｼｺ'),
-                        new Criteria\Match\Keyword('#rizeshico'),
+            new TweetSearchCriteria(
+                new TweetSearchCriteria\Match\LogicalAnd(
+                    new TweetSearchCriteria\Match\LogicalOr(
+                        new TweetSearchCriteria\Match\Keyword('リゼシコ'),
+                        new TweetSearchCriteria\Match\Keyword('ﾘｾﾞｼｺ'),
+                        new TweetSearchCriteria\Match\Keyword('rizeshico'),
+                        new TweetSearchCriteria\Match\Keyword('#リゼシコ'),
+                        new TweetSearchCriteria\Match\Keyword('#ﾘｾﾞｼｺ'),
+                        new TweetSearchCriteria\Match\Keyword('#rizeshico'),
                     ),
-                    new Criteria\Match\NotRetweet()
+                    new TweetSearchCriteria\Match\NotRetweet()
                 ),
-                Criteria\Period::unbound()
+                TweetSearchCriteria\Period::unbound()
             )
         );
     }
@@ -147,23 +147,23 @@ class TweetSearchAggregateResultApiRepository implements RepositoryInterface
         $this->apis[$id->getValue()] = new TweetSearchAggregateResultApi(
             $id,
             new TweetSearchAggregateResultApi\EndpointName('chiyashico'),
-            new Criteria(
-                new Criteria\Match\LogicalAnd(
-                    new Criteria\Match\LogicalOr(
-                        new Criteria\Match\Keyword('チヤシコ'),
-                        new Criteria\Match\Keyword('ﾁﾔｼｺ'),
-                        new Criteria\Match\Keyword('千夜シコ'),
-                        new Criteria\Match\Keyword('千夜ｼｺ'),
-                        new Criteria\Match\Keyword('chiyashico'),
-                        new Criteria\Match\Keyword('#チヤシコ'),
-                        new Criteria\Match\Keyword('#ﾁﾔｼｺ'),
-                        new Criteria\Match\Keyword('#千夜シコ'),
-                        new Criteria\Match\Keyword('#千夜ｼｺ'),
-                        new Criteria\Match\Keyword('#chiyashico'),
+            new TweetSearchCriteria(
+                new TweetSearchCriteria\Match\LogicalAnd(
+                    new TweetSearchCriteria\Match\LogicalOr(
+                        new TweetSearchCriteria\Match\Keyword('チヤシコ'),
+                        new TweetSearchCriteria\Match\Keyword('ﾁﾔｼｺ'),
+                        new TweetSearchCriteria\Match\Keyword('千夜シコ'),
+                        new TweetSearchCriteria\Match\Keyword('千夜ｼｺ'),
+                        new TweetSearchCriteria\Match\Keyword('chiyashico'),
+                        new TweetSearchCriteria\Match\Keyword('#チヤシコ'),
+                        new TweetSearchCriteria\Match\Keyword('#ﾁﾔｼｺ'),
+                        new TweetSearchCriteria\Match\Keyword('#千夜シコ'),
+                        new TweetSearchCriteria\Match\Keyword('#千夜ｼｺ'),
+                        new TweetSearchCriteria\Match\Keyword('#chiyashico'),
                     ),
-                    new Criteria\Match\NotRetweet()
+                    new TweetSearchCriteria\Match\NotRetweet()
                 ),
-                Criteria\Period::unbound()
+                TweetSearchCriteria\Period::unbound()
             )
         );
     }
@@ -174,19 +174,19 @@ class TweetSearchAggregateResultApiRepository implements RepositoryInterface
         $this->apis[$id->getValue()] = new TweetSearchAggregateResultApi(
             $id,
             new TweetSearchAggregateResultApi\EndpointName('chinoshico'),
-            new Criteria(
-                new Criteria\Match\LogicalAnd(
-                    new Criteria\Match\LogicalOr(
-                        new Criteria\Match\Keyword('チノシコ'),
-                        new Criteria\Match\Keyword('ﾁﾉｼｺ'),
-                        new Criteria\Match\Keyword('chinoshico'),
-                        new Criteria\Match\Keyword('#チノシコ'),
-                        new Criteria\Match\Keyword('#ﾁﾉｼｺ'),
-                        new Criteria\Match\Keyword('#chinoshico'),
+            new TweetSearchCriteria(
+                new TweetSearchCriteria\Match\LogicalAnd(
+                    new TweetSearchCriteria\Match\LogicalOr(
+                        new TweetSearchCriteria\Match\Keyword('チノシコ'),
+                        new TweetSearchCriteria\Match\Keyword('ﾁﾉｼｺ'),
+                        new TweetSearchCriteria\Match\Keyword('chinoshico'),
+                        new TweetSearchCriteria\Match\Keyword('#チノシコ'),
+                        new TweetSearchCriteria\Match\Keyword('#ﾁﾉｼｺ'),
+                        new TweetSearchCriteria\Match\Keyword('#chinoshico'),
                     ),
-                    new Criteria\Match\NotRetweet()
+                    new TweetSearchCriteria\Match\NotRetweet()
                 ),
-                Criteria\Period::unbound()
+                TweetSearchCriteria\Period::unbound()
             )
         );
     }
@@ -197,19 +197,19 @@ class TweetSearchAggregateResultApiRepository implements RepositoryInterface
         $this->apis[$id->getValue()] = new TweetSearchAggregateResultApi(
             $id,
             new TweetSearchAggregateResultApi\EndpointName('syamishico'),
-            new Criteria(
-                new Criteria\Match\LogicalAnd(
-                    new Criteria\Match\LogicalOr(
-                        new Criteria\Match\Keyword('シャミシコ'),
-                        new Criteria\Match\Keyword('ｼｬﾐｼｺ'),
-                        new Criteria\Match\Keyword('syamishico'),
-                        new Criteria\Match\Keyword('#シャミシコ'),
-                        new Criteria\Match\Keyword('#ｼｬﾐｼｺ'),
-                        new Criteria\Match\Keyword('#syamishico'),
+            new TweetSearchCriteria(
+                new TweetSearchCriteria\Match\LogicalAnd(
+                    new TweetSearchCriteria\Match\LogicalOr(
+                        new TweetSearchCriteria\Match\Keyword('シャミシコ'),
+                        new TweetSearchCriteria\Match\Keyword('ｼｬﾐｼｺ'),
+                        new TweetSearchCriteria\Match\Keyword('syamishico'),
+                        new TweetSearchCriteria\Match\Keyword('#シャミシコ'),
+                        new TweetSearchCriteria\Match\Keyword('#ｼｬﾐｼｺ'),
+                        new TweetSearchCriteria\Match\Keyword('#syamishico'),
                     ),
-                    new Criteria\Match\NotRetweet()
+                    new TweetSearchCriteria\Match\NotRetweet()
                 ),
-                Criteria\Period::unbound()
+                TweetSearchCriteria\Period::unbound()
             )
         );
     }
@@ -220,19 +220,19 @@ class TweetSearchAggregateResultApiRepository implements RepositoryInterface
         $this->apis[$id->getValue()] = new TweetSearchAggregateResultApi(
             $id,
             new TweetSearchAggregateResultApi\EndpointName('pinoshico'),
-            new Criteria(
-                new Criteria\Match\LogicalAnd(
-                    new Criteria\Match\LogicalOr(
-                        new Criteria\Match\Keyword('ぴのシコ'),
-                        new Criteria\Match\Keyword('ぴのｼｺ'),
-                        new Criteria\Match\Keyword('pinoshico'),
-                        new Criteria\Match\Keyword('#ぴのシコ'),
-                        new Criteria\Match\Keyword('#ぴのｼｺ'),
-                        new Criteria\Match\Keyword('#pinoshico'),
+            new TweetSearchCriteria(
+                new TweetSearchCriteria\Match\LogicalAnd(
+                    new TweetSearchCriteria\Match\LogicalOr(
+                        new TweetSearchCriteria\Match\Keyword('ぴのシコ'),
+                        new TweetSearchCriteria\Match\Keyword('ぴのｼｺ'),
+                        new TweetSearchCriteria\Match\Keyword('pinoshico'),
+                        new TweetSearchCriteria\Match\Keyword('#ぴのシコ'),
+                        new TweetSearchCriteria\Match\Keyword('#ぴのｼｺ'),
+                        new TweetSearchCriteria\Match\Keyword('#pinoshico'),
                     ),
-                    new Criteria\Match\NotRetweet()
+                    new TweetSearchCriteria\Match\NotRetweet()
                 ),
-                Criteria\Period::unbound()
+                TweetSearchCriteria\Period::unbound()
             )
         );
     }
@@ -243,25 +243,25 @@ class TweetSearchAggregateResultApiRepository implements RepositoryInterface
         $this->apis[$id->getValue()] = new TweetSearchAggregateResultApi(
             $id,
             new TweetSearchAggregateResultApi\EndpointName('poposhico'),
-            new Criteria(
-                new Criteria\Match\LogicalAnd(
-                    new Criteria\Match\LogicalOr(
-                        new Criteria\Match\Keyword('ぽぽろんシコ'),
-                        new Criteria\Match\Keyword('ぽぽろんｼｺ'),
-                        new Criteria\Match\Keyword('ぽぽシコ'),
-                        new Criteria\Match\Keyword('ぽぽｼｺ'),
-                        new Criteria\Match\Keyword('poporonshico'),
-                        new Criteria\Match\Keyword('poposhico'),
-                        new Criteria\Match\Keyword('#ぽぽろんシコ'),
-                        new Criteria\Match\Keyword('#ぽぽろんｼｺ'),
-                        new Criteria\Match\Keyword('#ぽぽシコ'),
-                        new Criteria\Match\Keyword('#ぽぽｼｺ'),
-                        new Criteria\Match\Keyword('#poporonshico'),
-                        new Criteria\Match\Keyword('#poposhico'),
+            new TweetSearchCriteria(
+                new TweetSearchCriteria\Match\LogicalAnd(
+                    new TweetSearchCriteria\Match\LogicalOr(
+                        new TweetSearchCriteria\Match\Keyword('ぽぽろんシコ'),
+                        new TweetSearchCriteria\Match\Keyword('ぽぽろんｼｺ'),
+                        new TweetSearchCriteria\Match\Keyword('ぽぽシコ'),
+                        new TweetSearchCriteria\Match\Keyword('ぽぽｼｺ'),
+                        new TweetSearchCriteria\Match\Keyword('poporonshico'),
+                        new TweetSearchCriteria\Match\Keyword('poposhico'),
+                        new TweetSearchCriteria\Match\Keyword('#ぽぽろんシコ'),
+                        new TweetSearchCriteria\Match\Keyword('#ぽぽろんｼｺ'),
+                        new TweetSearchCriteria\Match\Keyword('#ぽぽシコ'),
+                        new TweetSearchCriteria\Match\Keyword('#ぽぽｼｺ'),
+                        new TweetSearchCriteria\Match\Keyword('#poporonshico'),
+                        new TweetSearchCriteria\Match\Keyword('#poposhico'),
                     ),
-                    new Criteria\Match\NotRetweet()
+                    new TweetSearchCriteria\Match\NotRetweet()
                 ),
-                Criteria\Period::unbound()
+                TweetSearchCriteria\Period::unbound()
             )
         );
     }
@@ -272,17 +272,17 @@ class TweetSearchAggregateResultApiRepository implements RepositoryInterface
         $this->apis[$id->getValue()] = new TweetSearchAggregateResultApi(
             $id,
             new TweetSearchAggregateResultApi\EndpointName('ahigochi'),
-            new Criteria(
-                new Criteria\Match\LogicalAnd(
-                    new Criteria\Match\LogicalOr(
-                        new Criteria\Match\Keyword('あひごち'),
-                        new Criteria\Match\Keyword('#あひごち'),
-                        new Criteria\Match\Keyword('ahigochi'),
-                        new Criteria\Match\Keyword('#ahigochi'),
+            new TweetSearchCriteria(
+                new TweetSearchCriteria\Match\LogicalAnd(
+                    new TweetSearchCriteria\Match\LogicalOr(
+                        new TweetSearchCriteria\Match\Keyword('あひごち'),
+                        new TweetSearchCriteria\Match\Keyword('#あひごち'),
+                        new TweetSearchCriteria\Match\Keyword('ahigochi'),
+                        new TweetSearchCriteria\Match\Keyword('#ahigochi'),
                     ),
-                    new Criteria\Match\NotRetweet()
+                    new TweetSearchCriteria\Match\NotRetweet()
                 ),
-                Criteria\Period::unbound()
+                TweetSearchCriteria\Period::unbound()
             )
         );
     }
@@ -293,15 +293,15 @@ class TweetSearchAggregateResultApiRepository implements RepositoryInterface
         $this->apis[$id->getValue()] = new TweetSearchAggregateResultApi(
             $id,
             new TweetSearchAggregateResultApi\EndpointName('shico-diary'),
-            new Criteria(
-                new Criteria\Match\LogicalAnd(
-                    new Criteria\Match\LogicalOr(
-                        new Criteria\Match\Account('d_horiyama_core'),
-                        new Criteria\Match\Account('d_horiyama_ota'),
+            new TweetSearchCriteria(
+                new TweetSearchCriteria\Match\LogicalAnd(
+                    new TweetSearchCriteria\Match\LogicalOr(
+                        new TweetSearchCriteria\Match\Account('d_horiyama_core'),
+                        new TweetSearchCriteria\Match\Account('d_horiyama_ota'),
                     ),
-                    new Criteria\Match\Keyword('#しこにっき'),
+                    new TweetSearchCriteria\Match\Keyword('#しこにっき'),
                 ),
-                Criteria\Period::unbound()
+                TweetSearchCriteria\Period::unbound()
             )
         );
     }

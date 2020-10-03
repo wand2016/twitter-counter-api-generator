@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Domain\TweetSearchAggregateResultApi;
 
-use App\Domain\Tweet\TweetSearcher\Criteria;
 use App\Domain\TweetSearchAggregateResultApi\TweetSearchAggregateResultApi\EndpointName;
 use App\Domain\TweetSearchAggregateResultApi\TweetSearchAggregateResultApi\Id;
+use App\Domain\TweetSearchCriteria\TweetSearchCriteria;
 
 /**
  * Class TweetSearchAggregateResultApi
@@ -25,22 +25,23 @@ class TweetSearchAggregateResultApi
     private EndpointName $endpointName;
 
     /**
-     * @var Criteria
+     * @var TweetSearchCriteria
      */
-    private Criteria $searchCriteria;
+    private TweetSearchCriteria $searchCriteria;
 
     /**
      * TweetSearchAggregateResultApi constructor.
      * @param Id $id
      * @param EndpointName $endpointName
-     * @param Criteria $searchCriteria
+     * @param TweetSearchCriteria $searchCriteria
      */
-    public function __construct(Id $id, EndpointName $endpointName, Criteria $searchCriteria)
+    public function __construct(Id $id, EndpointName $endpointName, TweetSearchCriteria $searchCriteria)
     {
         $this->id = $id;
         $this->endpointName = $endpointName;
         $this->searchCriteria = $searchCriteria;
     }
+
 
     /**
      * @return Id
@@ -59,9 +60,9 @@ class TweetSearchAggregateResultApi
     }
 
     /**
-     * @return Criteria
+     * @return TweetSearchCriteria
      */
-    public function getSearchCriteria(): Criteria
+    public function getSearchCriteria(): TweetSearchCriteria
     {
         return $this->searchCriteria;
     }

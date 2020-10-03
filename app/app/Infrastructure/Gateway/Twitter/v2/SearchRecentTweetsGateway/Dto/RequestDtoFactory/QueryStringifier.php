@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway\Dto\RequestDtoFactory;
 
-use App\Domain\Tweet\TweetSearcher\Criteria\Match;
+use App\Domain\TweetSearchCriteria\TweetSearchCriteria\Match;
 use InvalidArgumentException;
 
 /**
