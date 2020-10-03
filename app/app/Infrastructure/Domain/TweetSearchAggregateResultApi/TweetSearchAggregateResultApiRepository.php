@@ -6,7 +6,6 @@ namespace App\Infrastructure\Domain\TweetSearchAggregateResultApi;
 
 use App\Domain\TweetSearchAggregateResultApi\TweetSearchAggregateResultApi;
 use App\Domain\TweetSearchAggregateResultApi\TweetSearchAggregateResultApi\EndpointName;
-use App\Domain\TweetSearchAggregateResultApi\TweetSearchAggregateResultApi\Id;
 use App\Domain\TweetSearchAggregateResultApi\TweetSearchAggregateResultApiRepository as RepositoryInterface;
 use App\Domain\TweetSearchCriteria\TweetSearchCriteria;
 use App\Exceptions\TweetAggregateResultApi\TweetAggregateResultApiNotFoundException;
@@ -70,10 +69,9 @@ class TweetSearchAggregateResultApiRepository implements RepositoryInterface
 
     protected function putSyaroshico(): void
     {
-        $id = new Id('11111111-1111-1111-1111-111111111111');
-        $this->apis[$id->getValue()] = new TweetSearchAggregateResultApi(
-            $id,
-            new TweetSearchAggregateResultApi\EndpointName('syaroshico'),
+        $endpointName = new TweetSearchAggregateResultApi\EndpointName('syaroshico');
+        $this->apis[$endpointName->getValue()] = new TweetSearchAggregateResultApi(
+            $endpointName,
             new TweetSearchCriteria(
                 new TweetSearchCriteria\Match\LogicalAnd(
                     new TweetSearchCriteria\Match\LogicalOr(
@@ -93,10 +91,9 @@ class TweetSearchAggregateResultApiRepository implements RepositoryInterface
 
     protected function putCocoshico(): void
     {
-        $id = new Id('22222222-2222-2222-2222-222222222222');
-        $this->apis[$id->getValue()] = new TweetSearchAggregateResultApi(
-            $id,
-            new TweetSearchAggregateResultApi\EndpointName('cocoshico'),
+        $endpointName = new TweetSearchAggregateResultApi\EndpointName('cocoshico');
+        $this->apis[$endpointName->getValue()] = new TweetSearchAggregateResultApi(
+            $endpointName,
             new TweetSearchCriteria(
                 new TweetSearchCriteria\Match\LogicalAnd(
                     new TweetSearchCriteria\Match\LogicalOr(
@@ -120,10 +117,9 @@ class TweetSearchAggregateResultApiRepository implements RepositoryInterface
 
     protected function putRizeshico(): void
     {
-        $id = new Id('33333333-3333-3333-3333-333333333333');
-        $this->apis[$id->getValue()] = new TweetSearchAggregateResultApi(
-            $id,
-            new TweetSearchAggregateResultApi\EndpointName('rizeshico'),
+        $endpointName = new TweetSearchAggregateResultApi\EndpointName('rizeshico');
+        $this->apis[$endpointName->getValue()] = new TweetSearchAggregateResultApi(
+            $endpointName,
             new TweetSearchCriteria(
                 new TweetSearchCriteria\Match\LogicalAnd(
                     new TweetSearchCriteria\Match\LogicalOr(
@@ -143,10 +139,9 @@ class TweetSearchAggregateResultApiRepository implements RepositoryInterface
 
     protected function putChiyashico(): void
     {
-        $id = new Id('44444444-4444-4444-4444-444444444444');
-        $this->apis[$id->getValue()] = new TweetSearchAggregateResultApi(
-            $id,
-            new TweetSearchAggregateResultApi\EndpointName('chiyashico'),
+        $endpointName = new TweetSearchAggregateResultApi\EndpointName('chiyashico');
+        $this->apis[$endpointName->getValue()] = new TweetSearchAggregateResultApi(
+            $endpointName,
             new TweetSearchCriteria(
                 new TweetSearchCriteria\Match\LogicalAnd(
                     new TweetSearchCriteria\Match\LogicalOr(
@@ -170,10 +165,9 @@ class TweetSearchAggregateResultApiRepository implements RepositoryInterface
 
     protected function putChinoshico(): void
     {
-        $id = new Id('55555555-5555-5555-5555-555555555555');
-        $this->apis[$id->getValue()] = new TweetSearchAggregateResultApi(
-            $id,
-            new TweetSearchAggregateResultApi\EndpointName('chinoshico'),
+        $endpointName = new TweetSearchAggregateResultApi\EndpointName('chinoshico');
+        $this->apis[$endpointName->getValue()] = new TweetSearchAggregateResultApi(
+            $endpointName,
             new TweetSearchCriteria(
                 new TweetSearchCriteria\Match\LogicalAnd(
                     new TweetSearchCriteria\Match\LogicalOr(
@@ -193,10 +187,9 @@ class TweetSearchAggregateResultApiRepository implements RepositoryInterface
 
     protected function putSyamishico(): void
     {
-        $id = new Id('66666666-6666-6666-6666-666666666666');
-        $this->apis[$id->getValue()] = new TweetSearchAggregateResultApi(
-            $id,
-            new TweetSearchAggregateResultApi\EndpointName('syamishico'),
+        $endpointName = new TweetSearchAggregateResultApi\EndpointName('syamishico');
+        $this->apis[$endpointName->getValue()] = new TweetSearchAggregateResultApi(
+            $endpointName,
             new TweetSearchCriteria(
                 new TweetSearchCriteria\Match\LogicalAnd(
                     new TweetSearchCriteria\Match\LogicalOr(
@@ -216,10 +209,9 @@ class TweetSearchAggregateResultApiRepository implements RepositoryInterface
 
     protected function putPinoshico(): void
     {
-        $id = new Id('77777777-7777-7777-7777-777777777777');
-        $this->apis[$id->getValue()] = new TweetSearchAggregateResultApi(
-            $id,
-            new TweetSearchAggregateResultApi\EndpointName('pinoshico'),
+        $endpointName = new TweetSearchAggregateResultApi\EndpointName('pinoshico');
+        $this->apis[$endpointName->getValue()] = new TweetSearchAggregateResultApi(
+            $endpointName,
             new TweetSearchCriteria(
                 new TweetSearchCriteria\Match\LogicalAnd(
                     new TweetSearchCriteria\Match\LogicalOr(
@@ -239,10 +231,9 @@ class TweetSearchAggregateResultApiRepository implements RepositoryInterface
 
     protected function putPoposhico(): void
     {
-        $id = new Id('88888888-8888-8888-8888-888888888888');
-        $this->apis[$id->getValue()] = new TweetSearchAggregateResultApi(
-            $id,
-            new TweetSearchAggregateResultApi\EndpointName('poposhico'),
+        $endpointName = new TweetSearchAggregateResultApi\EndpointName('poposhico');
+        $this->apis[$endpointName->getValue()] = new TweetSearchAggregateResultApi(
+            $endpointName,
             new TweetSearchCriteria(
                 new TweetSearchCriteria\Match\LogicalAnd(
                     new TweetSearchCriteria\Match\LogicalOr(
@@ -268,10 +259,9 @@ class TweetSearchAggregateResultApiRepository implements RepositoryInterface
 
     protected function putAhigochi(): void
     {
-        $id = new Id('eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee');
-        $this->apis[$id->getValue()] = new TweetSearchAggregateResultApi(
-            $id,
-            new TweetSearchAggregateResultApi\EndpointName('ahigochi'),
+        $endpointName = new TweetSearchAggregateResultApi\EndpointName('ahigochi');
+        $this->apis[$endpointName->getValue()] = new TweetSearchAggregateResultApi(
+            $endpointName,
             new TweetSearchCriteria(
                 new TweetSearchCriteria\Match\LogicalAnd(
                     new TweetSearchCriteria\Match\LogicalOr(
@@ -289,10 +279,9 @@ class TweetSearchAggregateResultApiRepository implements RepositoryInterface
 
     protected function putShicoDiary(): void
     {
-        $id = new Id('99999999-9999-9999-9999-999999999999');
-        $this->apis[$id->getValue()] = new TweetSearchAggregateResultApi(
-            $id,
-            new TweetSearchAggregateResultApi\EndpointName('shico-diary'),
+        $endpointName = new TweetSearchAggregateResultApi\EndpointName('shico-diary');
+        $this->apis[$endpointName->getValue()] = new TweetSearchAggregateResultApi(
+            $endpointName,
             new TweetSearchCriteria(
                 new TweetSearchCriteria\Match\LogicalAnd(
                     new TweetSearchCriteria\Match\LogicalOr(
