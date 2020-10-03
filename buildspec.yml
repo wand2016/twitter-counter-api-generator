@@ -5,7 +5,8 @@ env:
     CONSUMER_KEY: "twitter-consumer-key"
     CONSUMER_SECRET: "twitter-consumer-secret"
   variables:
-    AWS_BUCKET: "staging.twitter-counter-api"
+    STAGE: "dev"
+    AWS_BUCKET: "dev-twitter-counter-api"
 phases:
   install:
     runtime-versions:
@@ -20,7 +21,7 @@ phases:
       - php artisan key:generate
       # deploy
       - npm i -g serverless serverless-plugin-aws-alerts
-      - serverless deploy --stage=staging -v
+      - serverless deploy --stage=${STAGE} -v
   post_build:
     commands:
       - echo 'done'
