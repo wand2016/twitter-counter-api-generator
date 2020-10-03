@@ -7,11 +7,11 @@ namespace App\Providers;
 use App\Domain\Tweet\TweetSearcher as TweetSearcherInterface;
 use App\Domain\TweetAggregateResult\TweetAggregateResultRepository as TweetAggregateResultRepositoryInterface;
 use App\Domain\TweetSearchAggregateResultApi\TweetSearchAggregateResultApiRepository as ApiRepositoryInterface;
-use App\Domain\TweetSearchCriteria\TweetSearchCriteriaStringifier as TweetSearchCriteriaStringifierInterface;
+use App\Domain\TweetSearchCriteria\TweetSearchCriteriaMatchStringifier as TweetSearchCriteriaStringifierInterface;
 use App\Infrastructure\Domain\Tweet\TweetSearcher;
 use App\Infrastructure\Domain\TweetAggregateResult\TweetAggregateResultRepository;
 use App\Infrastructure\Domain\TweetSearchAggregateResultApi\TweetSearchAggregateResultApiRepository;
-use App\Infrastructure\Domain\TweetSearchCriteria\TweetSearchCriteriaStringifier;
+use App\Infrastructure\Domain\TweetSearchCriteria\TweetSearchCriteriaMatchStringifier;
 use App\Infrastructure\Gateway\Twitter\OAuth2TokenGateway;
 use App\Infrastructure\Gateway\Twitter\v2\BearerTokenPool;
 use Illuminate\Contracts\Container\Container;
@@ -59,7 +59,7 @@ class AppServiceProvider extends ServiceProvider implements DeferrableProvider
 
         $this->app->singleton(
             TweetSearchCriteriaStringifierInterface::class,
-            TweetSearchCriteriaStringifier::class
+            TweetSearchCriteriaMatchStringifier::class
         );
     }
 

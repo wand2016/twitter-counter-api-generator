@@ -52,7 +52,10 @@ final class SearchAndAggregateTweets
         $tweetSearchResult = $this->tweetSearcher->search($tweetSearchAggregateResultApi->getSearchCriteria());
         $tweetAggregateResult->applySearchResult($tweetSearchResult);
 
-        $this->tweetAggregateResultRepository->persist($tweetAggregateResult);
+        $this->tweetAggregateResultRepository->persist(
+            $tweetAggregateResult,
+            $tweetSearchAggregateResultApi->getSearchCriteria()->getMatch()
+        );
     }
 
     /**

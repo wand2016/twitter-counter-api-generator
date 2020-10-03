@@ -7,7 +7,7 @@ namespace App\UseCases;
 use App\Domain\Tweet\TweetSearcher;
 use App\Domain\TweetSearchAggregateResultApi\TweetSearchAggregateResultApi\EndpointName;
 use App\Domain\TweetSearchAggregateResultApi\TweetSearchAggregateResultApiRepository;
-use App\Domain\TweetSearchCriteria\TweetSearchCriteriaStringifier;
+use App\Domain\TweetSearchCriteria\TweetSearchCriteriaMatchStringifier;
 use App\Exceptions\Tweet\TweetSearchFailedException;
 use App\Exceptions\TweetAggregateResultApi\TweetAggregateResultApiNotFoundException;
 use Carbon\CarbonImmutable;
@@ -20,9 +20,9 @@ class SearchTweets
     private TweetSearchAggregateResultApiRepository $apiRepository;
 
     /**
-     * @var TweetSearchCriteriaStringifier
+     * @var TweetSearchCriteriaMatchStringifier
      */
-    private TweetSearchCriteriaStringifier $tweetSearchCriteriaStringifier;
+    private TweetSearchCriteriaMatchStringifier $tweetSearchCriteriaMatchStringifier;
 
     /**
      * @var TweetSearcher
@@ -32,16 +32,16 @@ class SearchTweets
     /**
      * SearchTweets constructor.
      * @param TweetSearchAggregateResultApiRepository $apiRepository
-     * @param TweetSearchCriteriaStringifier $tweetSearchCriteriaStringifier
+     * @param TweetSearchCriteriaMatchStringifier $tweetSearchCriteriaMatchStringifier
      * @param TweetSearcher $tweetSearcher
      */
     public function __construct(
         TweetSearchAggregateResultApiRepository $apiRepository,
-        TweetSearchCriteriaStringifier $tweetSearchCriteriaStringifier,
+        TweetSearchCriteriaMatchStringifier $tweetSearchCriteriaMatchStringifier,
         TweetSearcher $tweetSearcher
     ) {
         $this->apiRepository = $apiRepository;
-        $this->tweetSearchCriteriaStringifier = $tweetSearchCriteriaStringifier;
+        $this->tweetSearchCriteriaMatchStringifier = $tweetSearchCriteriaMatchStringifier;
         $this->tweetSearcher = $tweetSearcher;
     }
 
@@ -57,7 +57,7 @@ class SearchTweets
 
         echo '==========' . PHP_EOL;
         echo 'query:' . PHP_EOL;
-        echo $this->tweetSearchCriteriaStringifier->stringify($criteria);
+        echo $this->tweetSearchCriteriaMatchStringifier->stringify($criteria->getMatch());
         echo PHP_EOL;
         echo '==========' . PHP_EOL;
 

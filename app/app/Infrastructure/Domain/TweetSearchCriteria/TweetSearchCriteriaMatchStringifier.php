@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Domain\TweetSearchCriteria;
 
-use App\Domain\TweetSearchCriteria\TweetSearchCriteria;
-use App\Domain\TweetSearchCriteria\TweetSearchCriteriaStringifier as TweetSearchCriteriaStringifierInterface;
+use App\Domain\TweetSearchCriteria\TweetSearchCriteria\Match;
+use App\Domain\TweetSearchCriteria\TweetSearchCriteriaMatchStringifier as TweetSearchCriteriaStringifierInterface;
 use App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway\Dto\RequestDtoFactory\QueryStringifier;
 
 /**
- * Class TweetSearchCriteriaStringifier
+ * Class TweetSearchCriteriaMatchStringifier
  * @package App\Infrastructure\Domain\TweetSearchCriteria
  */
-class TweetSearchCriteriaStringifier implements TweetSearchCriteriaStringifierInterface
+class TweetSearchCriteriaMatchStringifier implements TweetSearchCriteriaStringifierInterface
 {
     /**
      * @var QueryStringifier
@@ -20,7 +20,7 @@ class TweetSearchCriteriaStringifier implements TweetSearchCriteriaStringifierIn
     private QueryStringifier $stringifier;
 
     /**
-     * TweetSearchCriteriaStringifier constructor.
+     * TweetSearchCriteriaMatchStringifier constructor.
      * @param QueryStringifier $stringifier
      */
     public function __construct(QueryStringifier $stringifier)
@@ -29,11 +29,11 @@ class TweetSearchCriteriaStringifier implements TweetSearchCriteriaStringifierIn
     }
 
     /**
-     * @param TweetSearchCriteria $criteria
+     * @param Match $match
      * @return string
      */
-    public function stringify(TweetSearchCriteria $criteria): string
+    public function stringify(Match $match): string
     {
-        return $this->stringifier->stringifyMatch($criteria->getMatch());
+        return $this->stringifier->stringifyMatch($match);
     }
 }
