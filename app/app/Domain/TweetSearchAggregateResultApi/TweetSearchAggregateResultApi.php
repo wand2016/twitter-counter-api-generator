@@ -7,6 +7,7 @@ namespace App\Domain\TweetSearchAggregateResultApi;
 use App\Domain\TweetSearchAggregateResultApi\TweetSearchAggregateResultApi\EndpointName;
 use App\Domain\TweetSearchAggregateResultApi\TweetSearchAggregateResultApi\Id;
 use App\Domain\TweetSearchCriteria\TweetSearchCriteria;
+use Carbon\CarbonImmutable;
 
 /**
  * Class TweetSearchAggregateResultApi
@@ -64,6 +65,17 @@ class TweetSearchAggregateResultApi
      */
     public function getSearchCriteria(): TweetSearchCriteria
     {
-        return $this->searchCriteria;
+        $today = CarbonImmutable::today();
+        $since = $today->subDays(6);
+
+        // TODO: persist only matches
+        return new TweetSearchCriteria(
+            $this->searchCriteria->getMatch(),
+            TweetSearchCriteria\Period::since(
+                $since->year,
+                $since->month,
+                $since->day
+            )
+        );
     }
 }
