@@ -66,7 +66,10 @@ class TweetSearchAggregateResultApiRepository implements RepositoryInterface
                     new Criteria\Match\LogicalOr(
                         new Criteria\Match\Keyword('シャロシコ'),
                         new Criteria\Match\Keyword('ｼｬﾛｼｺ'),
-                        new Criteria\Match\Keyword('syaroshico')
+                        new Criteria\Match\Keyword('syaroshico'),
+                        new Criteria\Match\Keyword('#シャロシコ'),
+                        new Criteria\Match\Keyword('#ｼｬﾛｼｺ'),
+                        new Criteria\Match\Keyword('#syaroshico')
                     ),
                     new Criteria\Match\NotRetweet()
                 ),
@@ -89,6 +92,11 @@ class TweetSearchAggregateResultApiRepository implements RepositoryInterface
                         new Criteria\Match\Keyword('シココア'),
                         new Criteria\Match\Keyword('ｼｺｺｱ'),
                         new Criteria\Match\Keyword('shicocoa'),
+                        new Criteria\Match\Keyword('#ココシコ'),
+                        new Criteria\Match\Keyword('#ｺｺｼｺ'),
+                        new Criteria\Match\Keyword('#シココア'),
+                        new Criteria\Match\Keyword('#ｼｺｺｱ'),
+                        new Criteria\Match\Keyword('#shicocoa'),
                     ),
                     new Criteria\Match\NotRetweet()
                 ),
@@ -109,6 +117,9 @@ class TweetSearchAggregateResultApiRepository implements RepositoryInterface
                         new Criteria\Match\Keyword('リゼシコ'),
                         new Criteria\Match\Keyword('ﾘｾﾞｼｺ'),
                         new Criteria\Match\Keyword('rizeshico'),
+                        new Criteria\Match\Keyword('#リゼシコ'),
+                        new Criteria\Match\Keyword('#ﾘｾﾞｼｺ'),
+                        new Criteria\Match\Keyword('#rizeshico'),
                     ),
                     new Criteria\Match\NotRetweet()
                 ),
@@ -131,6 +142,11 @@ class TweetSearchAggregateResultApiRepository implements RepositoryInterface
                         new Criteria\Match\Keyword('千夜シコ'),
                         new Criteria\Match\Keyword('千夜ｼｺ'),
                         new Criteria\Match\Keyword('chiyashico'),
+                        new Criteria\Match\Keyword('#チヤシコ'),
+                        new Criteria\Match\Keyword('#ﾁﾔｼｺ'),
+                        new Criteria\Match\Keyword('#千夜シコ'),
+                        new Criteria\Match\Keyword('#千夜ｼｺ'),
+                        new Criteria\Match\Keyword('#chiyashico'),
                     ),
                     new Criteria\Match\NotRetweet()
                 ),
@@ -151,6 +167,9 @@ class TweetSearchAggregateResultApiRepository implements RepositoryInterface
                         new Criteria\Match\Keyword('チノシコ'),
                         new Criteria\Match\Keyword('ﾁﾉｼｺ'),
                         new Criteria\Match\Keyword('chinoshico'),
+                        new Criteria\Match\Keyword('#チノシコ'),
+                        new Criteria\Match\Keyword('#ﾁﾉｼｺ'),
+                        new Criteria\Match\Keyword('#chinoshico'),
                     ),
                     new Criteria\Match\NotRetweet()
                 ),
@@ -171,6 +190,9 @@ class TweetSearchAggregateResultApiRepository implements RepositoryInterface
                         new Criteria\Match\Keyword('シャミシコ'),
                         new Criteria\Match\Keyword('ｼｬﾐｼｺ'),
                         new Criteria\Match\Keyword('syamishico'),
+                        new Criteria\Match\Keyword('#シャミシコ'),
+                        new Criteria\Match\Keyword('#ｼｬﾐｼｺ'),
+                        new Criteria\Match\Keyword('#syamishico'),
                     ),
                     new Criteria\Match\NotRetweet()
                 ),
