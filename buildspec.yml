@@ -25,3 +25,7 @@ phases:
   post_build:
     commands:
       - echo 'done'
+cache:
+  paths:
+    - "/root/.composer/**/*"
+    - "/root/.npm/**/*"
