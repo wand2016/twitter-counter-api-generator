@@ -46,7 +46,7 @@ class RequestDtoFactory
         return new RequestDto(
             $query,
             $criteria->getPeriod()->getStartDate(),
-            $criteria->getPeriod()->getEndDate(),
+            $criteria->getPeriod()->getEndDatetime(),
             $tweetFields,
             MaxResults::max(),
             $nextToken

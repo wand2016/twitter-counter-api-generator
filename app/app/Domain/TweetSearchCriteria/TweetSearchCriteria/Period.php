@@ -22,27 +22,23 @@ final class Period
     /**
      * @var DateTimeInterface
      */
-    private DateTimeInterface $endDate;
+    private DateTimeInterface $endDatetime;
 
     /**
      * Period constructor.
      * @param DateTimeInterface $startDate
-     * @param DateTimeInterface $endDate
+     * @param DateTimeInterface $endDatetime
      */
     private function __construct(
         DateTimeInterface $startDate,
-        DateTimeInterface $endDate
+        DateTimeInterface $endDatetime
     ) {
         if (!CarbonImmutable::instance($startDate)->isStartOfDay()) {
             throw new InvalidArgumentException('startDate must be start of day.');
         }
 
-        if (!CarbonImmutable::instance($endDate)->isStartOfDay()) {
-            throw new InvalidArgumentException('endDate must be start of day.');
-        }
-
         $this->startDate = $startDate;
-        $this->endDate = $endDate;
+        $this->endDatetime = $endDatetime;
     }
 
     /**
@@ -56,9 +52,9 @@ final class Period
     /**
      * @return DateTimeInterface
      */
-    public function getEndDate(): DateTimeInterface
+    public function getEndDatetime(): DateTimeInterface
     {
-        return $this->endDate;
+        return $this->endDatetime;
     }
 
     /**
@@ -67,7 +63,7 @@ final class Period
     public function days(): iterable
     {
         $itr = CarbonImmutable::instance($this->startDate);
-        $until = CarbonImmutable::instance($this->endDate);
+        $until = CarbonImmutable::instance($this->endDatetime);
 
         while ($itr->lessThanOrEqualTo($until)) {
             yield $itr;
@@ -94,6 +90,26 @@ final class Period
     ): self {
         $startDate = static::makeStartDate($startYear, $startMonth, $startDay);
         $endDate = static::makeEndDate($endYear, $endMonth, $endDay);
+
+        return new static(
+            $startDate,
+            $endDate
+        );
+    }
+
+    /**
+     * @param int $startYear
+     * @param int $startMonth
+     * @param int $startDay
+     * @return static
+     */
+    public static function since(
+        int $startYear,
+        int $startMonth,
+        int $startDay
+    ): self {
+        $startDate = static::makeStartDate($startYear, $startMonth, $startDay);
+        $endDate = CarbonImmutable::now();
 
         return new static(
             $startDate,

@@ -83,7 +83,7 @@ final class RequestDto
             [
                 'query' => $this->query,
                 'start_time' => $this->startTimeOrNull(),
-                'end' => $this->endTimeOrNull(),
+                'end_time' => $this->endTimeOrNull(),
                 'tweet.fields' => $this->tweetFieldsOrNull(),
                 'max_results' => $this->maxResultsOrNull(),
                 'next_token' => $this->nextTokenOrNull(),
