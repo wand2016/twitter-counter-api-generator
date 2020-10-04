@@ -20,18 +20,18 @@ final class Period
     private DateTimeInterface $startDate;
 
     /**
-     * @var DateTimeInterface
+     * @var DateTimeInterface|null
      */
-    private DateTimeInterface $endDatetime;
+    private ?DateTimeInterface $endDatetime;
 
     /**
      * Period constructor.
      * @param DateTimeInterface $startDate
-     * @param DateTimeInterface $endDatetime
+     * @param DateTimeInterface|null $endDatetime
      */
     private function __construct(
         DateTimeInterface $startDate,
-        DateTimeInterface $endDatetime
+        ?DateTimeInterface $endDatetime
     ) {
         if (!CarbonImmutable::instance($startDate)->isStartOfDay()) {
             throw new InvalidArgumentException('startDate must be start of day.');
@@ -50,9 +50,9 @@ final class Period
     }
 
     /**
-     * @return DateTimeInterface
+     * @return DateTimeInterface|null
      */
-    public function getEndDatetime(): DateTimeInterface
+    public function getEndDatetime(): ?DateTimeInterface
     {
         return $this->endDatetime;
     }
@@ -63,7 +63,9 @@ final class Period
     public function days(): iterable
     {
         $itr = CarbonImmutable::instance($this->startDate);
-        $until = CarbonImmutable::instance($this->endDatetime);
+        $until = $this->endDatetime
+            ? CarbonImmutable::instance($this->endDatetime)->startOfDay()
+            : CarbonImmutable::today();
 
         while ($itr->lessThanOrEqualTo($until)) {
             yield $itr;
@@ -109,11 +111,10 @@ final class Period
         int $startDay
     ): self {
         $startDate = static::makeStartDate($startYear, $startMonth, $startDay);
-        $endDate = CarbonImmutable::now();
 
         return new static(
             $startDate,
-            $endDate
+            null
         );
     }
 
