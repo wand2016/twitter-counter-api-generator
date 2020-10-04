@@ -9,7 +9,7 @@ use App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway\Dto\RequestD
 use App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway\Dto\ResponseDto;
 use App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway\Dto\ResponseDtoFactory;
 use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Exception\BadResponseException;
+use GuzzleHttp\Exception\GuzzleException;
 
 /**
  * Class SearchRecentTweetsGateway
@@ -66,7 +66,8 @@ class SearchRecentTweetsGateway
     {
         $bearerToken = $this->bearerTokenPool->getBearerToken();
         try {
-            $response = $this->client->get(
+            $response = $this->client->request(
+                'get',
                 static::URI,
                 [
                     'query' => $request->toQueryParameters(),
@@ -75,8 +76,8 @@ class SearchRecentTweetsGateway
                     ],
                 ]
             );
-        } catch (BadResponseException $e) {
-            throw new SearchRecentFailedException($e);
+        } catch (GuzzleException $e) {
+            throw  SearchRecentFailedException::createFromGuzzleException($e);
         }
 
         return $this->responseDtoFactory->parseResponseBodyContents($response->getBody()->getContents());

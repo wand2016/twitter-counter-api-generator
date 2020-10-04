@@ -8,7 +8,7 @@ use App\Exceptions\TwitterApi\AuthorizationFailedException;
 use App\Exceptions\TwitterApi\AuthorizationTokenParseFailedException;
 use Exception;
 use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Exception\BadResponseException;
+use GuzzleHttp\Exception\GuzzleException;
 
 /**
  * Class OAuth2TokenGateway
@@ -49,7 +49,8 @@ class OAuth2TokenGateway
         $bearerTokenCredentials = base64_encode("{$consumerKey}:{$consumerSecretKey}");
 
         try {
-            $response = $this->client->post(
+            $response = $this->client->request(
+                'post',
                 static::URI,
                 [
                     'headers' => [
@@ -61,8 +62,8 @@ class OAuth2TokenGateway
                     ],
                 ]
             );
-        } catch (BadResponseException $e) {
-            throw new AuthorizationFailedException($e);
+        } catch (GuzzleException $e) {
+            throw AuthorizationFailedException::createFromGuzzleException($e);
         }
 
         return $this->parseAccessToken($response->getBody()->getContents());
