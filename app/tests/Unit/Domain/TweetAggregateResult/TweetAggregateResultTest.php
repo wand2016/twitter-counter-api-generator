@@ -146,18 +146,13 @@ class TweetAggregateResultTest extends TestCase
         $dailyAggregateResults = [...$sut->getDailyAggregateResults()];
 
         $this->assertCount(
-            2,
+            1,
             $sut->getDailyAggregateResults()
         );
         $this->assertDailyResult(
             TweetAggregateResult\Daily\Date::create(2020, 10, 1),
             2,
             $dailyAggregateResults[0]
-        );
-        $this->assertDailyResult(
-            TweetAggregateResult\Daily\Date::create(2020, 10, 2),
-            0,
-            $dailyAggregateResults[1]
         );
     }
 

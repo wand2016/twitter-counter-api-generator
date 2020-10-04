@@ -103,6 +103,11 @@ final class TweetAggregateResult
      */
     public function putDailyAggregateResult(Daily $dailyAggregateResult): void
     {
+        if ($dailyAggregateResult->getCount() === 0) {
+            unset($this->dailyAggregateResultMap[$dailyAggregateResult->getDate()->getTimestamp()]);
+            return;
+        }
+        
         $this->dailyAggregateResultMap[$dailyAggregateResult->getDate()->getTimestamp()] = $dailyAggregateResult;
     }
 
