@@ -63,13 +63,10 @@ class TweetSearchAggregateResultApi
 
         return new TweetSearchCriteria(
             $this->match,
-            TweetSearchCriteria\Period::create(
+            TweetSearchCriteria\Period::since(
                 $since->year,
                 $since->month,
-                $since->day,
-                $today->year,
-                $today->month,
-                $today->day
+                $since->day
             )
         );
     }
