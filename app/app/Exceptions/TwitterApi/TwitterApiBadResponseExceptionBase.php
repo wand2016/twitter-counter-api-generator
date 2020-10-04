@@ -6,6 +6,7 @@ namespace App\Exceptions\TwitterApi;
 
 use Exception;
 use GuzzleHttp\Exception\BadResponseException;
+use GuzzleHttp\Exception\GuzzleException;
 
 /**
  * Class TwitterApiBadResponseExceptionBase
@@ -14,16 +15,37 @@ use GuzzleHttp\Exception\BadResponseException;
 abstract class TwitterApiBadResponseExceptionBase extends Exception
 {
     /**
-     * TwitterApiBadResponseExceptionBase constructor.
-     * @param BadResponseException $exception
+     * @param GuzzleException $e
+     * @return static
      */
-    public function __construct(BadResponseException $exception)
+    final public static function createFromGuzzleException(GuzzleException $e): self
     {
-        $response = $exception->getResponse();
+        if ($e instanceof BadResponseException) {
+            return self::createFromBadResponseException($e);
+        }
 
-        $message = $response ? $response->getBody()->getContents() : 'no response';
-        $code = $response ? $response->getStatusCode() : 0;
+        /** @phpstan-ignore-next-line */
+        return new static(
+            $e->getMessage(),
+            $e->getCode(),
+            $e
+        );
+    }
 
-        parent::__construct($message, $code, $exception);
+    /**
+     * @param BadResponseException $e
+     * @return static
+     */
+    private static function createFromBadResponseException(
+        BadResponseException $e
+    ): self {
+        $response = $e->getResponse();
+
+        /** @phpstan-ignore-next-line */
+        return new static(
+            $response ? $response->getBody()->getContents() : 'no response',
+            $response ? $response->getStatusCode() : 0,
+            $e
+        );
     }
 }
