@@ -37,10 +37,13 @@ class TweetSearcherTest extends TestCase
                 new Keyword('ごちうさ'),
                 new NotRetweet()
             ),
-            Period::since(
+            Period::create(
                 $today->year,
                 $today->month,
-                $today->day - 1
+                $today->day - 1,
+                $today->year,
+                $today->month,
+                $today->day
             ),
         );
 

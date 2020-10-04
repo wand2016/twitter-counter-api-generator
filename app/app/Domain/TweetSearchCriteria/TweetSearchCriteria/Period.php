@@ -15,29 +15,29 @@ use InvalidArgumentException;
 final class Period
 {
     /**
-     * @var DateTimeInterface|null
+     * @var DateTimeInterface
      */
-    private ?DateTimeInterface $startDate;
+    private DateTimeInterface $startDate;
 
     /**
-     * @var DateTimeInterface|null
+     * @var DateTimeInterface
      */
-    private ?DateTimeInterface $endDate;
+    private DateTimeInterface $endDate;
 
     /**
      * Period constructor.
-     * @param DateTimeInterface|null $startDate
-     * @param DateTimeInterface|null $endDate
+     * @param DateTimeInterface $startDate
+     * @param DateTimeInterface $endDate
      */
     private function __construct(
-        ?DateTimeInterface $startDate,
-        ?DateTimeInterface $endDate
+        DateTimeInterface $startDate,
+        DateTimeInterface $endDate
     ) {
-        if ($startDate && !CarbonImmutable::instance($startDate)->isStartOfDay()) {
+        if (!CarbonImmutable::instance($startDate)->isStartOfDay()) {
             throw new InvalidArgumentException('startDate must be start of day.');
         }
 
-        if ($endDate && !CarbonImmutable::instance($endDate)->isStartOfDay()) {
+        if (!CarbonImmutable::instance($endDate)->isStartOfDay()) {
             throw new InvalidArgumentException('endDate must be start of day.');
         }
 
@@ -46,21 +46,34 @@ final class Period
     }
 
     /**
-     * @return DateTimeInterface|null
+     * @return DateTimeInterface
      */
-    public function getStartDate()
+    public function getStartDate(): DateTimeInterface
     {
         return $this->startDate;
     }
 
     /**
-     * @return DateTimeInterface|null
+     * @return DateTimeInterface
      */
-    public function getEndDate()
+    public function getEndDate(): DateTimeInterface
     {
         return $this->endDate;
     }
 
+    /**
+     * @return iterable|DateTimeInterface[]
+     */
+    public function days(): iterable
+    {
+        $itr = CarbonImmutable::instance($this->startDate);
+        $until = CarbonImmutable::instance($this->endDate);
+
+        while ($itr->lessThanOrEqualTo($until)) {
+            yield $itr;
+            $itr = $itr->addDay();
+        }
+    }
 
     /**
      * @param int $startYear
@@ -86,48 +99,6 @@ final class Period
             $startDate,
             $endDate
         );
-    }
-
-    /**
-     * @param int $startYear
-     * @param int $startMonth
-     * @param int $startDay
-     * @return static
-     */
-    public static function since(
-        int $startYear,
-        int $startMonth,
-        int $startDay
-    ): self {
-        return new static(
-            static::makeStartDate($startYear, $startMonth, $startDay),
-            null
-        );
-    }
-
-    /**
-     * @param int $endYear
-     * @param int $endMonth
-     * @param int $endDay
-     * @return static
-     */
-    public static function until(
-        int $endYear,
-        int $endMonth,
-        int $endDay
-    ): self {
-        return new static(
-            null,
-            static::makeEndDate($endYear, $endMonth, $endDay)
-        );
-    }
-
-    /**
-     * @return static
-     */
-    public static function unbound(): self
-    {
-        return new static(null, null);
     }
 
     /**

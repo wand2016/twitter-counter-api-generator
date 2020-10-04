@@ -65,6 +65,18 @@ final class TweetAggregateResult
      */
     public function applySearchResult(TweetSearchResult $tweetSearchResult): void
     {
+        // fill with zero
+        $days = $tweetSearchResult->getCriteria()->getPeriod()->days();
+        foreach ($days as $day) {
+            $this->putDailyAggregateResult(
+                new Daily(
+                    new Daily\Date($day),
+                    0
+                )
+            );
+        }
+
+        // then override with searched counts
         collect($tweetSearchResult->getTweets())
             ->groupBy(
                 function (Tweet $tweet): int {
