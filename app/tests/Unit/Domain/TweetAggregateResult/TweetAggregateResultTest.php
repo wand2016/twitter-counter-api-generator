@@ -8,6 +8,7 @@ use App\Domain\Tweet\Tweet;
 use App\Domain\Tweet\TweetSearchResult;
 use App\Domain\TweetAggregateResult\TweetAggregateResult;
 use App\Domain\TweetSearchAggregateResultApi\TweetSearchAggregateResultApi\EndpointName;
+use App\Domain\TweetSearchCriteria\TweetSearchCriteria;
 use Carbon\CarbonImmutable;
 use Tests\TestCase;
 
@@ -27,6 +28,17 @@ class TweetAggregateResultTest extends TestCase
         $sut = TweetAggregateResult::create(new EndpointName('syaroshico'));
 
         $tweetSearchResult = new TweetSearchResult(
+            new TweetSearchCriteria(
+                new TweetSearchCriteria\Match\Keyword('syaroshico'),
+                TweetSearchCriteria\Period::create(
+                    2020,
+                    10,
+                    1,
+                    2020,
+                    10,
+                    2
+                )
+            ),
             $this->createTweetAt(2020, 10, 1, 0, 0, 0),
             $this->createTweetAt(2020, 10, 1, 12, 34, 56),
             $this->createTweetAt(2020, 10, 2, 0, 0, 0),
@@ -62,6 +74,17 @@ class TweetAggregateResultTest extends TestCase
         );
 
         $tweetSearchResult = new TweetSearchResult(
+            new TweetSearchCriteria(
+                new TweetSearchCriteria\Match\Keyword('syaroshico'),
+                TweetSearchCriteria\Period::create(
+                    2020,
+                    10,
+                    1,
+                    2020,
+                    10,
+                    3
+                )
+            ),
             $this->createTweetAt(2020, 10, 1, 0, 0, 0),
             // some tweets has been deleted
             $this->createTweetAt(2020, 10, 2, 0, 0, 0),
@@ -89,6 +112,52 @@ class TweetAggregateResultTest extends TestCase
             TweetAggregateResult\Daily\Date::create(2020, 10, 3),
             1,
             $dailyAggregateResults[2]
+        );
+    }
+
+    public function testApplySearchResultOverwrittenWithZero(): void
+    {
+        $sut = TweetAggregateResult::create(
+            new EndpointName('syaroshico'),
+            [
+                new TweetAggregateResult\Daily(TweetAggregateResult\Daily\Date::create(2020, 10, 1), 2),
+                new TweetAggregateResult\Daily(TweetAggregateResult\Daily\Date::create(2020, 10, 2), 1),
+            ]
+        );
+
+        $tweetSearchResult = new TweetSearchResult(
+            new TweetSearchCriteria(
+                new TweetSearchCriteria\Match\Keyword('syaroshico'),
+                TweetSearchCriteria\Period::create(
+                    2020,
+                    10,
+                    1,
+                    2020,
+                    10,
+                    2
+                )
+            ),
+            $this->createTweetAt(2020, 10, 1, 0, 0, 0),
+            $this->createTweetAt(2020, 10, 1, 23, 59, 59),
+        );
+        // tweets on 2020-10-2 has been completely deleted
+
+        $sut->applySearchResult($tweetSearchResult);
+        $dailyAggregateResults = [...$sut->getDailyAggregateResults()];
+
+        $this->assertCount(
+            2,
+            $sut->getDailyAggregateResults()
+        );
+        $this->assertDailyResult(
+            TweetAggregateResult\Daily\Date::create(2020, 10, 1),
+            2,
+            $dailyAggregateResults[0]
+        );
+        $this->assertDailyResult(
+            TweetAggregateResult\Daily\Date::create(2020, 10, 2),
+            0,
+            $dailyAggregateResults[1]
         );
     }
 

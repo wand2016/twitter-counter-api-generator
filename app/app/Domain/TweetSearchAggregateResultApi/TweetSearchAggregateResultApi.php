@@ -20,19 +20,19 @@ class TweetSearchAggregateResultApi
     private EndpointName $endpointName;
 
     /**
-     * @var TweetSearchCriteria
+     * @var TweetSearchCriteria\Match
      */
-    private TweetSearchCriteria $searchCriteria;
+    private TweetSearchCriteria\Match $match;
 
     /**
      * TweetSearchAggregateResultApi constructor.
      * @param EndpointName $endpointName
-     * @param TweetSearchCriteria $searchCriteria
+     * @param TweetSearchCriteria\Match $match
      */
-    public function __construct(EndpointName $endpointName, TweetSearchCriteria $searchCriteria)
+    public function __construct(EndpointName $endpointName, TweetSearchCriteria\Match $match)
     {
         $this->endpointName = $endpointName;
-        $this->searchCriteria = $searchCriteria;
+        $this->match = $match;
     }
 
 
@@ -45,6 +45,15 @@ class TweetSearchAggregateResultApi
     }
 
     /**
+     * @return TweetSearchCriteria\Match
+     */
+    public function getMatch(): TweetSearchCriteria\Match
+    {
+        return $this->match;
+    }
+
+    /**
+     * TODO: delete
      * @return TweetSearchCriteria
      */
     public function getSearchCriteria(): TweetSearchCriteria
@@ -52,13 +61,15 @@ class TweetSearchAggregateResultApi
         $today = CarbonImmutable::today();
         $since = $today->subDays(6);
 
-        // TODO: persist only matches
         return new TweetSearchCriteria(
-            $this->searchCriteria->getMatch(),
-            TweetSearchCriteria\Period::since(
+            $this->match,
+            TweetSearchCriteria\Period::create(
                 $since->year,
                 $since->month,
-                $since->day
+                $since->day,
+                $today->year,
+                $today->month,
+                $today->day
             )
         );
     }

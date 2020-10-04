@@ -32,7 +32,7 @@ class Daily
     public function __construct(Date $date, int $count)
     {
         if ($count < 0) {
-            throw new DomainException('$count must be positive');
+            throw new DomainException('$count must be zero or positive');
         }
 
         $this->date = $date;

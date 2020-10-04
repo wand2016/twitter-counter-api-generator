@@ -105,6 +105,6 @@ class TweetSearcher implements TweetSearcherInterface
             $tweets = $tweets->concat($chunk);
         } while ($nextToken);
 
-        return new TweetSearchResult(...$tweets);
+        return new TweetSearchResult($criteria, ...$tweets);
     }
 }
