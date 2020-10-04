@@ -8,7 +8,7 @@ use App\Exceptions\TwitterApi\SearchRecentFailedException;
 use App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway\Dto\RequestDto;
 use App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway\Dto\ResponseDto;
 use App\Infrastructure\Gateway\Twitter\v2\SearchRecentTweetsGateway\Dto\ResponseDtoFactory;
-use GuzzleHttp\Client;
+use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\BadResponseException;
 
 /**
@@ -23,9 +23,9 @@ class SearchRecentTweetsGateway
     private const URI = 'https://api.twitter.com/2/tweets/search/recent';
 
     /**
-     * @var Client
+     * @var ClientInterface
      */
-    private Client $client;
+    private ClientInterface $client;
 
     /**
      * @var BearerTokenPool
@@ -39,12 +39,12 @@ class SearchRecentTweetsGateway
 
     /**
      * SearchRecentTweetsGateway constructor.
-     * @param Client $client
+     * @param ClientInterface $client
      * @param BearerTokenPool $bearerTokenPool
      * @param ResponseDtoFactory $responseDtoFactory
      */
     public function __construct(
-        Client $client,
+        ClientInterface $client,
         BearerTokenPool $bearerTokenPool,
         ResponseDtoFactory $responseDtoFactory
     ) {
